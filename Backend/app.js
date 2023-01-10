@@ -20,8 +20,12 @@ app.use((req, res, next) => {
         next();
       });
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+   extended: true
+ }));
 
+const User = require('./routes/user.route')
+app.use ("/api/v1/User", User)
 
 module.exports = app; 
 
