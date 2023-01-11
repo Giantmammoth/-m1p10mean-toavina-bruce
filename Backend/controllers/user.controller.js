@@ -41,3 +41,61 @@ exports.signup = async (req, res, next) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 };
+
+exports.verifyAuth = async (req, res) => {
+	try {
+		const user = await User.findOne({ _id: req.params.id });
+		
+		if (!user) return res.status(400).send({ message: "Invalid id" });
+
+		const token = await Token.findOne({
+			userId: user._id,
+		});
+		
+		if (!token) return res.status(400).send({ message: "Invalid token" });
+
+		await User.updateOne({ _id: user._id }, { $set : {isVerify: true} });
+		await token.remove(); 
+
+		var message = "Votre compte a été vérifier, vous pouvez connecter désormais !";
+		await sendMail(user.email, "Validation du compte", message);
+
+		res.status(200).send({ message: "Compte verifier avec succès" });
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+};
+
+exports.login = async (req, res, next) => {
+	const validate = (data) => {
+		const schema = Joi.object({
+			email: Joi.string().email().required().label("Email"),
+			password: Joi.string().required().label("Password"),
+		});
+		return schema.validate(data);
+	};
+    try {
+		const { error } = validate(req.body);
+		if (error)
+			return res.status(400).send({ message: error.details[0].message });
+
+		const user = await User.findOne({ email: req.body.email });
+		if (!user)
+			return res.status(401).send({ message: "Mots de passe ou Email invalide" });
+
+		const validPassword = await bcrypt.compare(
+			req.body.password,
+			user.password
+		);
+		if (!validPassword)
+			return res.status(401).send({ message: "Mots de passe ou Email invalide" });
+
+		if (!user.isVerify) {
+			return res.status(401).send({ message: "Un Email de vérification vous a été envoyer, veuiller vérifier s'il vous plait" });
+			}	
+		const token = user.generateAuthToken();
+		res.status(200).send({ data: token, message: "Connexion reussi !" });
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+ }; 

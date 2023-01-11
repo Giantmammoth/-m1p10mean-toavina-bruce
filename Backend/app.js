@@ -27,5 +27,8 @@ app.use(bodyParser.urlencoded({
 const User = require('./routes/user.route')
 app.use ("/api/v1/User", User)
 
+const Car = require('./routes/car.route')
+app.use ("/api/v1/Car", Car)
+
 module.exports = app; 
 
