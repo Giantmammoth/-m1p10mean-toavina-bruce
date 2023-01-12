@@ -7,12 +7,19 @@ exports.depotCar = async (req, res) => {
         if (!user)
             return res.status(409).send({ message: "User do not Exist!" }); 
         
-        console.log(req.body.listReparation)
         let repareArray = []
+        let price = []
         req.body.listReparation.forEach(element => {
-            console.log(element)
-            repareArray.push(element);
+            const item = {
+                descri : element.descri,
+                prix : element.prix
+            }
+            repareArray.push(item);
+            price.push(element.prix)
         });
+
+        let intArray = price.map(str => parseInt(str));
+        let finalprice  = intArray.reduce((a, b) => a + b);
 
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
@@ -20,6 +27,7 @@ exports.depotCar = async (req, res) => {
         const car = new Car ({
             ...req.body,
             listReparation: repareArray,
+            totalPrix: finalprice,
             user: user._id,
             userName: user.lastName + ' ' + user.firstName,
             dateDepot:  today.toLocaleDateString()

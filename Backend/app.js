@@ -20,9 +20,7 @@ app.use((req, res, next) => {
         next();
       });
 
-app.use(bodyParser.urlencoded({
-   extended: true
- }));
+app.use(bodyParser.json());
 
 const User = require('./routes/user.route')
 app.use ("/api/v1/User", User)
