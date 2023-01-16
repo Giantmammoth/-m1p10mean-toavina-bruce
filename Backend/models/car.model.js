@@ -8,6 +8,8 @@ const carschema = mongoose.Schema({
     listReparation: [Object],
     totalPrix: { type: String, required: true},
     dateDepot: { type: String, required: true},
+    dateSortie: { type: String, required: true},
+    avancement: { type: String, required: true, default: "0"},
     user: { type: ObjectId, ref: "user", required: true },
     userName: { type: String, required: true },  
 });

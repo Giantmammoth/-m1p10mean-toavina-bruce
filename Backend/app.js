@@ -28,5 +28,8 @@ app.use ("/api/v1/User", User)
 const Car = require('./routes/car.route')
 app.use ("/api/v1/Car", Car)
 
+const Facture = require('./routes/facture.route')
+app.use ("/api/v1/Facture", Facture)
+
 module.exports = app; 
 

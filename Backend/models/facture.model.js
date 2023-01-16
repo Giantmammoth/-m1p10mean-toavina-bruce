@@ -9,7 +9,8 @@ const factureschema = mongoose.Schema({
     listReparation: [Object],
     totalPrix: { type: String, required: true, default: "0"},
     statue : { type: Boolean, default: false },
-    dateSortie: { type: String, required: true},
+    dateDepot: { type: String, required: true, default: ""},
+    dateSortie: { type: String, required: true, default: ""},
     user: { type: ObjectId, ref: "user", required: true },
     userName: { type: String, required: true },  
 });
