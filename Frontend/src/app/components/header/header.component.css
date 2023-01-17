@@ -1,0 +1,62 @@
+@font-face {
+  font-family: "InspirationRegular";
+  src: url("../../../assets/font/Inspiration-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Istok Web";
+  src: url("../../../assets/font/IstokWeb-Regular.ttf");
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100vw;
+}
+
+header div {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.logo {
+  font-family: 'InspirationRegular';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 76px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+}
+
+.login_button_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.login_button {
+  font-family: 'Istok Web';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 35px;
+  color: #ffffff;
+  text-align: center;
+  margin: auto 5px;
+  width: 150px;
+  height: 40px;
+  border-style: none;
+}
+
+.singIn {
+  background: rgba(14, 167, 139, 0);
+
+}
+
+.signUp {
+  background: rgba(0, 255, 209, 0.24);
+  border-radius: 5px;
+}

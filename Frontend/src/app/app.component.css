@@ -1,0 +1,18 @@
+.app-container {
+  background: url("../assets/images/homeBackgroundImage.jpg");
+  height: 100vh;
+  width: 100vw;
+  background-size: 100%;
+  background-size: cover;
+}
+
+.calque {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.3);
+  height: 100vh;
+  width: 100vw;
+  background-size: 100%;
+  background-size: cover;
+}
