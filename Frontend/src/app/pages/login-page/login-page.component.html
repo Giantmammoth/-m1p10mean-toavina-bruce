@@ -1,1 +1,48 @@
-<p>login-page works!</p>
+<div class="container_login_page">
+  <div *ngIf="login === 'sign in'; then signInBlock; else signUpBlock"></div>
+  <ng-template #signInBlock>
+    <div class="container_login_form">
+      <h1>sign in</h1>
+      <form action="">
+        <div>
+          <label for="identifiant">identifiant (or email address)</label>
+          <input type="text" id="identifiant" name="identifiant">
+        </div>
+        <div>
+          <label for="password">password</label>
+          <input type="password" name="password" id="password">
+        </div>
+        <p>if you don't already have an account you can create one <a href="#">here</a> </p>
+        <button type="submit" (click)="changeLoginPage('sign up')"> login </button>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #signUpBlock>
+    <div class="container_login_form">
+      <h1>sign up</h1>
+      <form action="">
+        <div>
+          <label for="name">name</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <div>
+          <label for="address_email">address email</label>
+          <input type="email" name="address_email" id="address_email">
+        </div>
+        <div>
+          <label for="password">password</label>
+          <input type="password" name="password" id="password">
+        </div>
+        <div>
+          <label for="confirm_password">confirm password</label>
+          <input type="password" name="confirm_password" id="confirm_password">
+        </div>
+        <p>when you register in our site you accepted in our <a href="#">privacy policy</a></p>
+        <button type="submit" (click)="changeLoginPage('sign in')">register</button>
+        <p>if you already have an account you can go to login <a href="">here</a> </p>
+      </form>
+    </div>
+  </ng-template>
+
+</div>

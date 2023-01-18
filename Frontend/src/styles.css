@@ -1,4 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "InspirationRegular";
+  src: url("./assets/font/Inspiration/Inspiration-Regular.ttf");
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+  font-family: "Istok Web";
+  src: url("./assets/font/IstokWeb/IstokWeb-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/font/Inter/Inter-Regular.ttf");
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

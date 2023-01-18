@@ -1,13 +1,3 @@
-@font-face {
-  font-family: "InspirationRegular";
-  src: url("../../../assets/font/Inspiration-Regular.ttf");
-}
-
-@font-face {
-  font-family: "Istok Web";
-  src: url("../../../assets/font/IstokWeb-Regular.ttf");
-}
-
 header {
   display: flex;
   align-items: center;

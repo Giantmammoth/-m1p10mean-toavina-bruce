@@ -1,7 +1,11 @@
 <header>
   <div class="logo">Garage</div>
+  <div>
+    <button [routerLink]="['/adminResponsableAtelier']">Admin RA</button>
+    <button [routerLink]="['/adminResponsableFinancier']">Admin RF</button>
+  </div>
   <div class="login_button_container">
-    <button class="login_button singIn">Sign in</button>
-    <button class="login_button signUp">Sign up</button>
+    <button [routerLink]="['/login']" class="login_button singIn">Sign in</button>
+    <button [routerLink]="['/login']" class="login_button signUp">Sign up</button>
   </div>
 </header>

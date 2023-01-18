@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./login-page.component.css']
 })
 export class LoginPageComponent {
+  login: string = "sign up"
 
+  changeLoginPage(page_name: string): void {
+    this.login = page_name;
+  }
 }

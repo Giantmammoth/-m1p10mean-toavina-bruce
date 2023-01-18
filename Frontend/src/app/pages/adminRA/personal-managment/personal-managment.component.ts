@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: 'app-admin-rf',
-  templateUrl: './admin-rf.component.html',
-  styleUrls: ['./admin-rf.component.css'],
+  selector: 'app-personal-managment',
+  templateUrl: './personal-managment.component.html',
+  styleUrls: ['./personal-managment.component.css'],
 })
-export class AdminRFComponent {
+export class PersonalManagmentComponent {
   todo = [
     'Get to work',
     'Pick up groceries',

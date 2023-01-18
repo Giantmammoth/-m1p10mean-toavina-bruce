@@ -1,0 +1,26 @@
+<div class="container_list">
+  <div class="container">
+    <h2>en attente</h2>
+    <div cdkDropList #waittingList="cdkDropList" [cdkDropListData]="enAttente" [cdkDropListConnectedTo]="loadingList"
+      class="list" (cdkDropListDropped)="drop($event)">
+      <div class="list-item" *ngFor="let item of enAttente" cdkDrag>{{item}}</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>en cours</h2>
+    <div cdkDropList #loadingList="cdkDropList" [cdkDropListData]="enCours" [cdkDropListConnectedTo]="outList"
+      class="list" (cdkDropListDropped)="drop($event)">
+      <div class="list-item" *ngFor="let item of enCours" cdkDrag>{{item}}</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>en sortie</h2>
+    <div cdkDropList #outList="cdkDropList" [cdkDropListData]="enSortie" class="list"
+      (cdkDropListDropped)="drop($event)">
+      <div class="list-item" *ngFor="let item of enSortie" cdkDrag>{{item}}</div>
+    </div>
+  </div>
+  <app-waiting-list-model></app-waiting-list-model>
+</div>

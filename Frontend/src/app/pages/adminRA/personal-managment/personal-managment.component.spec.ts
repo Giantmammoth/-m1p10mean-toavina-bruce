@@ -1,15 +1,15 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AdminRAComponent } from './admin-ra.component';
+import { PersonalManagmentComponent } from './personal-managment.component';
 
-describe('AdminRAComponent', () => {
-  let component: AdminRAComponent;
-  let fixture: ComponentFixture<AdminRAComponent>;
+describe('PersonalManagmentComponent', () => {
+  let component: PersonalManagmentComponent;
+  let fixture: ComponentFixture<PersonalManagmentComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminRAComponent ],
+      declarations: [ PersonalManagmentComponent ],
       imports: [
         NoopAnimationsModule,
         DragDropModule,
@@ -18,7 +18,7 @@ describe('AdminRAComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminRAComponent);
+    fixture = TestBed.createComponent(PersonalManagmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
