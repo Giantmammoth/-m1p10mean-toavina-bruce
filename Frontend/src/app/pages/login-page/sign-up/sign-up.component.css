@@ -10,6 +10,18 @@
   color: white;
 }
 
+.close {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: bold;
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  border: none;
+  background: transparent;
+  color: white;
+}
+
 .container_login_form {
   font-family: 'Inter';
   text-transform: capitalize;
