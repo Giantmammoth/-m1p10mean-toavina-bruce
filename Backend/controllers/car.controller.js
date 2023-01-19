@@ -2,6 +2,15 @@ const Car = require('../models/car.model')
 const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model')
 
+
+function addDays(date, days) {
+    const parts = date.split("/");
+    const d = new Date(parts[2], parts[1] - 1, parts[0]);
+    d.setDate(d.getDate() + days);
+    const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
+    return newDate;
+}
+
 exports.depotCar = async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
@@ -10,18 +19,23 @@ exports.depotCar = async (req, res) => {
 
         let repareArray = []
         let price = []
-        console.log(req.body)
+        let delaiArray = []
         req.body.listReparation.forEach(element => {
             const item = {
-                descri: element.descri,
+                tache: element.tache,
                 prix: element.prix,
+                delai: element.delai
             }
             repareArray.push(item);
             price.push(element.prix)
+            delaiArray.push(element.delai)
         });
 
         let intArray = price.map(str => parseInt(str));
         let finalprice = intArray.reduce((a, b) => a + b);
+
+        let sommedelai = delaiArray.map(str => parseInt(str));
+        let totaldelai = sommedelai.reduce((a, b) => a + b);
 
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
@@ -33,6 +47,7 @@ exports.depotCar = async (req, res) => {
             user: user._id,
             userName: user.lastName + ' ' + user.firstName,
             dateDepot: today.toLocaleDateString(),
+            dateSortie: addDays(today.toLocaleDateString(), totaldelai)
         })
         console.log(car)
         await car.save();
