@@ -1,0 +1,41 @@
+.details_container {
+  background-color: aquamarine;
+  width: 40vw;
+  height: 100vh;
+}
+
+.title {
+  margin: 0px 5px;
+  border-bottom: 1px solid black;
+}
+
+.title>ul {
+  display: flex;
+  list-style: none;
+}
+
+.title li {
+  font-size: larger;
+  font-weight: 500;
+  flex-grow: 1;
+  border-left: 2px solid black;
+  margin: 0px 0px 5px 0px;
+  padding-left: 5px;
+}
+
+.details {
+  margin: 10px 20px;
+}
+
+.details h3,
+.details p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.details h3 {
+  font-size: larger;
+  font-weight: 900;
+  font-style: "Inter";
+
+}

@@ -1,0 +1,27 @@
+.new_car_container {
+  background-color: rgb(0, 255, 255);
+  width: 40vw;
+}
+
+.new_car_container h2 {
+  margin: 0px 5px 30px 5px;
+  border-bottom: 1px solid black;
+}
+
+.form_container {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-label {
+  color: black;
+}
+
+mat-form-field,
+button {
+  margin: 0px 10px;
+}
+
+mat-form-field input {
+  margin: 0px;
+}

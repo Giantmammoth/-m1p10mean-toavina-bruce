@@ -1,0 +1,80 @@
+/* page container style */
+.customer_page_container {
+  display: flex;
+}
+
+/* Same style for all container */
+.car_list_container,
+.garage_services_container,
+.info_container {
+  height: 100vh;
+}
+
+
+/* car list style */
+.car_list_container {
+  background-color: rgba(0, 255, 255, 0.4);
+  width: 20vw;
+}
+
+.title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  margin: 0px 5px;
+}
+
+.title>h2 {
+  margin: 0px;
+  padding: 0px;
+}
+
+.title>#add_icon {
+  width: 25px;
+  height: 25px;
+  background-color: rgb(0, 106, 106);
+}
+
+.car_list_container>#add_icon>mat-icon {
+  color: white;
+}
+
+.car_list_container p {
+  margin: 0px 20px;
+  padding: 0;
+  line-height: 18px;
+  font-weight: 800;
+}
+
+.car {
+  background-color: rgba(0, 255, 255, 0.5);
+  margin: 10px;
+  padding: 10px 0px;
+  border-radius: 2px;
+}
+
+.marque {
+  font-size: larger;
+  font-style: "Inter", "Arial black";
+}
+
+.matricule {
+  font-size: small;
+  color: rgb(67, 65, 65);
+}
+
+/* details_container style */
+
+.info-container {
+  width: 40vw;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Garage service style */
+.garage_services_container {
+  background-color: rgb(79, 251, 194);
+  width: 40vw;
+}

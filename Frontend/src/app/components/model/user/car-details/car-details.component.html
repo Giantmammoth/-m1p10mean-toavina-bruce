@@ -1,0 +1,25 @@
+<div class="details_container">
+  <div class="title">
+    <ul>
+      <li *ngFor="let title of titles" [class.selected]="title === selected" (click)="setSelected(title)"> {{title}}
+      </li>
+    </ul>
+  </div>
+  <div class="details" *ngIf="detail">
+    <h3>Marque :</h3>
+    <p> {{detail.marque}} </p>
+    <h3>Imatriculation :</h3>
+    <p> {{detail.im}} </p>
+    <h3>Année :</h3>
+    <p> {{detail.annee}} </p>
+    <h3>Puissance moteur :</h3>
+    <p> {{detail.moteur}} </p>
+    <h3>Type de moteur :</h3>
+    <p> {{detail.type_moteur}} </p>
+    <h3>Transmission :</h3>
+    <p> {{detail.transmission}} </p>
+    <h3>Couleur :</h3>
+    <p> {{detail.couleur}} </p>
+    <button mat-raised-button color="primary">Primary</button>
+  </div>
+</div>

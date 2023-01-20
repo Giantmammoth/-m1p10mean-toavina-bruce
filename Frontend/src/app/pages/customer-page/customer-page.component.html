@@ -1,0 +1,35 @@
+<div class="customer_page_container">
+  <!-- list for all car's customer -->
+
+  <div class="car_list_container">
+    <div class="title">
+      <h2>My cars</h2>
+      <button mat-mini-fab id="add_icon" #button (click)="[hello(),toggleAddButtonStatus()]">
+        <mat-icon> {{add_button_status.text}} </mat-icon>
+      </button>
+    </div>
+    <ul class="car_list">
+      <li class="car" [class.isActive]="car === car_details" *ngFor="let car of myCars" (click)="viewDetails(car)">
+        <p class="marque"> {{car.marque}} </p>
+        <p class="matricule"> {{car.im}} </p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Détails for the car selectionned in the car list -->
+
+  <div class="info_container">
+    <mat-drawer-container class="add_container" autosize>
+      <app-add-new-car [toggle]="!add_button_status.status"></app-add-new-car>
+      <app-car-details [detail]="car_details"></app-car-details>
+    </mat-drawer-container>
+
+  </div>
+
+  <!-- Garage service offer for the customer -->
+
+  <div class="garage_services_container">
+    <h2>Services</h2>
+  </div>
+
+</div>
