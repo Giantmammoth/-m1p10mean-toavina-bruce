@@ -10,7 +10,8 @@ const factureschema = mongoose.Schema({
     totalPrix: { type: String, required: true, default: "0"},
     statue : { type: Boolean, default: false },
     dateDepot: { type: String, required: true, default: ""},
-    dateSortie: { type: String, required: true, default: ""},
+    dateDebut: { type: String, required: false, default: ""},
+    dateSortie: { type: String, required: false, default: ""},
     user: { type: ObjectId, ref: "user", required: true },
     userName: { type: String, required: true },  
 });

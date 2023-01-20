@@ -2,59 +2,40 @@ const Car = require('../models/car.model')
 const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model')
 
-exports.creatFacture = async (req, res) => {
-  try {
-    const car = await Car.findById(req.params.id)
-    if (!car)
-      return res.status(404).send({ message: "Car not found" })
-
-    const facture = new Facture({
-      idCar: car._id,
-      model: car.model,
-      type: car.type,
-      matricule: car.matricule,
-      user: car.user,
-      userName: car.userName
-    })
-    console.log(facture)
-    await facture.save()
-    return res.status(200).send({ message: 'Facture créer avec succes !' });
-
-  }
-  catch (error) {
-    console.log(error)
-    res.status(500).send({ message: "Internal Server Error" });
-  }
+function addDays(date, days) {
+  const parts = date.split("/");
+  const d = new Date(parts[2], parts[1] - 1, parts[0]);
+  d.setDate(d.getDate() + days);
+  const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
+  return newDate;
 }
 
-exports.addDoneReparation = async (req, res) => {
+exports.confirmePay = async (req, res) => {
   try {
-    const car = await Car.findById(req.params.id)
-    if (!car)
-      return res.status(404).send({ message: "Car not found" })
-
-    const facture = await Facture.findOne({ idCar: req.params.id })
+    const facture = await Facture.findById(req.params.id)
     if (!facture)
       return res.status(404).send({ message: "Facture not found" })
 
-    let price = []
+    const car = await Car.findById(facture.idCar)
+    if (!car)
+      return res.status(404).send({ message: "Car not found" })
 
-    const item = {
-      descri: req.params.descri,
-      prix: req.params.prix
-    }
+    let delaiArray = []
+    facture.listReparation.map((data) => delaiArray.push(data.delai))
 
-    let intArray = facture.listReparation.map(str => parseInt(str.prix));
-    intArray.push(parseInt(item.prix))
-    console.log(intArray)
-    let finalprice = intArray.reduce((a, b) => a + b);
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
 
-    await Facture.updateOne({ _id: facture._id }, { $push: { listReparation: item }, $set: {totalPrix: finalprice} })
+    let sommedelai = delaiArray.map(str => parseInt(str));
+    let totaldelai = sommedelai.reduce((a, b) => a + b);
 
-    
+    await Facture.updateOne({ _id: facture._id }, { $set: { statue: true, dateDebut: today.toLocaleDateString(), dateSortie: addDays(today.toLocaleDateString(), totaldelai) } })
+    await Car.updateOne({ _id: car._id }, { $set: { dateDebut: today.toLocaleDateString(), dateSortie: addDays(today.toLocaleDateString(), totaldelai) } })
 
-    return res.status(200).send({ message: 'Facture mise a jour avec succes !' });
+    return res.status(200).send({ message: "Facture payé avec succè !" })
+
   }
+
   catch (error) {
     console.log(error)
     res.status(500).send({ message: "Internal Server Error" });

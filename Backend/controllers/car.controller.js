@@ -3,13 +3,7 @@ const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model')
 
 
-function addDays(date, days) {
-    const parts = date.split("/");
-    const d = new Date(parts[2], parts[1] - 1, parts[0]);
-    d.setDate(d.getDate() + days);
-    const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
-    return newDate;
-}
+
 
 exports.depotCar = async (req, res) => {
     try {
@@ -34,9 +28,6 @@ exports.depotCar = async (req, res) => {
         let intArray = price.map(str => parseInt(str));
         let finalprice = intArray.reduce((a, b) => a + b);
 
-        let sommedelai = delaiArray.map(str => parseInt(str));
-        let totaldelai = sommedelai.reduce((a, b) => a + b);
-
         const timeElapsed = Date.now();
         const today = new Date(timeElapsed);
 
@@ -47,7 +38,6 @@ exports.depotCar = async (req, res) => {
             user: user._id,
             userName: user.lastName + ' ' + user.firstName,
             dateDepot: today.toLocaleDateString(),
-            dateSortie: addDays(today.toLocaleDateString(), totaldelai)
         })
         console.log(car)
         await car.save();
@@ -60,8 +50,6 @@ exports.depotCar = async (req, res) => {
             listReparation: repareArray,
             totalPrix: finalprice,
             dateDepot: car.dateDepot,
-            dateSortie: car.dateSortie,
-            status: true,
             user: car.user,
             userName: car.userName
         })
@@ -86,7 +74,7 @@ exports.depotCar = async (req, res) => {
 
 function convertDateToMilliseconds(dateString) {
     let dateArr = dateString.split("/");
-    let date = new Date(dateArr[2], dateArr[1]-1, dateArr[0]);
+    let date = new Date(dateArr[2], dateArr[1] - 1, dateArr[0]);
     return date.getTime();
 }
 
@@ -115,7 +103,7 @@ exports.progressPercentage = async (req, res) => {
 
             if (duration >= delayms || i >= 100) {
                 console.log("Complete!");
- 
+
                 // Clear the interval
                 clearInterval(interval);
             } else {
