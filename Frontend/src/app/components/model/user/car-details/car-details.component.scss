@@ -1,4 +1,28 @@
-.selected {
-  background-color: rgba(232, 255, 255, 0.348);
-  border-bottom: 2px solid white;
+.title li {
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  background-color: rgb(0, 106, 106);
+  color: white;
+  flex-grow: 1;
+  margin: 0px 0px 5px 0px;
+  padding: 5px 0px;
+  border-left: 1px solid aquamarine;
+  border-right: 1px solid aquamarine;
+
+  &.selected {
+    background-color: aquamarine;
+    color: black;
+  }
+
+}
+
+table {
+  background-color: aquamarine;
+  color: black;
+  width: 100%;
+}
+
+.mat-column-select {
+  overflow: initial;
 }

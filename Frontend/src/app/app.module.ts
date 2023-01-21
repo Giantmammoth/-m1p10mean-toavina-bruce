@@ -26,6 +26,8 @@ import { AddNewCarComponent } from './components/model/user/add-new-car/add-new-
 import { CarDetailsComponent } from './components/model/user/car-details/car-details.component';
 import { CarHistoryComponent } from './components/model/user/car-history/car-history.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +57,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatInputModule,
     MatSidenavModule,
     MatSelectModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatTableModule,
+    MatPaginatorModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

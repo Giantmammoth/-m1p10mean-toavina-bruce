@@ -14,17 +14,22 @@
   list-style: none;
 }
 
-.title li {
-  font-size: larger;
-  font-weight: 500;
-  flex-grow: 1;
-  border-left: 2px solid black;
-  margin: 0px 0px 5px 0px;
-  padding-left: 5px;
-}
-
 .details {
   margin: 10px 20px;
+  overflow: visible;
+}
+
+.info_container {
+  display: flex;
+}
+
+.info {
+  flex-grow: 1;
+  border-right: 1px solid rgb(0, 69, 46);
+}
+
+.repair_list {
+  flex-grow: 2;
 }
 
 .details h3,
