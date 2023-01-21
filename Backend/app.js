@@ -31,8 +31,11 @@ app.use ("/api/v1/Car", Car)
 const Service = require('./routes/service.route')
 app.use ("/api/v1/Service", Service)
 
-// const Facture = require('./routes/facture.route')
-// app.use ("/api/v1/Facture", Facture)
+const Facture = require('./routes/facture.route')
+app.use ("/api/v1/Facture", Facture)
+
+const Garage = require('./routes/garage.route')
+app.use ("/api/v1/Garage", Garage)
 
 module.exports = app; 
 
