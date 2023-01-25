@@ -30,10 +30,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ServicesComponent } from './components/model/user/services/services.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TableComponent } from './components/model/all/table/table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ShowDetailsComponent } from './components/model/user/show-details/show-details.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { HomeRFComponent } from './pages/adminRF/home-rf/home-rf.component';
+import { MatSortModule } from '@angular/material/sort';
+import { TableComponent } from './components/model/all/table/table.component';
 
 
 @NgModule({
@@ -50,8 +52,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CarDetailsComponent,
     CarHistoryComponent,
     ServicesComponent,
-    TableComponent,
     ShowDetailsComponent,
+    HomeRFComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +76,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTooltipModule,
     MatProgressBarModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

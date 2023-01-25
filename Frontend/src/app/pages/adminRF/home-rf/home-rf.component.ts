@@ -6,5 +6,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-rf.component.css']
 })
 export class HomeRFComponent {
-
+  /* navigation */
+  navigation: any = [
+    {
+      label: "Payement",
+      icon: "payments"
+    },
+    {
+      label: "Employée",
+      icon: "group"
+    },
+    {
+      label: "Statistique",
+      icon: "analytics"
+    }
+  ]
 }
