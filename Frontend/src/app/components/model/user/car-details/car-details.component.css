@@ -1,46 +1,162 @@
 .details_container {
-  background-color: aquamarine;
-  width: 40vw;
-  height: 100vh;
-}
-
-.title {
-  margin: 0px 5px;
-  border-bottom: 1px solid black;
-}
-
-.title>ul {
   display: flex;
-  list-style: none;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
 }
 
-.details {
-  margin: 10px 20px;
-  overflow: visible;
+.box_container {
+  margin: 10px 10px;
+  height: auto;
 }
 
-.info_container {
-  display: flex;
+.car_info_container {
+  position: relative;
+  height: 100%;
 }
 
-.info {
-  flex-grow: 1;
-  border-right: 1px solid rgb(0, 69, 46);
+.car_id {
+  padding: 25px 20px 10px 20px;
+  border-bottom: 1px solid rgba(3, 3, 18, 0.2);
 }
 
-.repair_list {
-  flex-grow: 2;
-}
-
-.details h3,
-.details p {
+.marque {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  text-transform: uppercase;
   margin: 0px;
   padding: 0px;
 }
 
-.details h3 {
-  font-size: larger;
-  font-weight: 900;
-  font-style: "Inter";
+.immatriculation {
+  font-style: normal;
+  font-size: 20px;
+  margin: 0px;
+  padding: 0px;
+}
 
+.car_info div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+}
+
+.car_info div h4 {
+  font-weight: bold;
+  font-style: normal;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 0px;
+  padding: 0px;
+}
+
+.car_info p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.button_container {
+  display: flex;
+  margin: 10px 20px;
+  padding: 0px;
+}
+
+.button_icon_car {
+  background-color: rgba(240, 248, 255, 0.689);
+  margin-right: 5px;
+  height: 45px;
+}
+
+.tow_car_icon {
+  width: 20px;
+  height: 20px;
+}
+
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Open sans';
+  font-size: 25px;
+  font-weight: bold;
+  padding: 20px 10px 10px 20px;
+  border-bottom: 1px solid rgba(3, 3, 18, 0.2);
+}
+
+.lists>ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.lists li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(3, 3, 18, 0.2);
+}
+
+.lists li p {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Open sans";
+  font-weight: 400;
+}
+
+.reparation_list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+
+.loading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 0px;
+  font-family: "Open sans";
+  font-size: 25px;
+  font-weight: bold;
+  width: 100%;
+  border-top: 1px solid rgba(3, 3, 18, 0.2);
+  padding: 5px 20px 20px;
+}
+
+.loading p {
+  margin: 0px;
+  padding: 0px;
+}
+
+.progress_bar_container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.progress_bar_container>p {
+  font-family: 'Inter';
+  font-size: 10px;
+  font-weight: bold;
+
+}
+
+.progressBar {
+  width: 100%;
+  height: 15px;
+  background-color: black;
+  border-radius: 10px;
+}
+
+.progress {
+  height: 100%;
+  background-color: red;
+  border-radius: 10px;
 }

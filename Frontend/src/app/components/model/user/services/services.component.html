@@ -1,0 +1,95 @@
+<div class="control_container">
+  <nav>
+    <ul>
+      <li>
+        <button mat-mini-fab class="nav_button" 
+                matTooltip="Close controller" 
+                matTooltipPosition = "after"
+                (click)="[closeControllerPage()]">
+          <mat-icon>close</mat-icon>
+        </button>
+      </li>
+      <li *ngFor="let page of navigation" (click)="changePage(page)">
+        <button mat-mini-fab class="nav_button" 
+                [matTooltip]="page.label" 
+                matTooltipPosition = "after"
+                [class.isActive]="page.label == pageSelected" >
+                <mat-icon>
+                  {{page.icon}}
+                </mat-icon>
+        </button>
+      </li>
+    </ul>
+  </nav>
+  
+  <div class="content_container">
+    <div class="title">
+      <h2>Control</h2>
+    </div>
+  
+    <div [ngSwitch]="pageSelected" class="container">
+      <!-- Services content -->
+      <div *ngSwitchCase="'service'" class="container_service">
+  
+        <select name="type" id="type" [(ngModel)]="servicePageSelected">
+          <option [value]="service.value" name="type" *ngFor="let service of listOfServices">
+            {{ service.title }}
+          </option>
+        </select>
+  
+        <!-- switch in the different r -->
+        <div [ngSwitch]="servicePageSelected" class="content">
+  
+          <div *ngSwitchCase="'entretien'">
+            <div *ngFor="let entretien of data.services.entretien">
+              <h3> {{ entretien.title }} </h3>
+              <ul>
+                <li *ngFor="let task of entretien.tasks">
+                  <mat-checkbox class="checkBox" [checked]="isChecked(task,selectedService!.service.entretien.tasks)"
+                    [name]="task" [color]="'primary'" (click)="addToSelectedService($event.target)">
+                    {{task}}
+                  </mat-checkbox>
+                </li>
+              </ul>
+            </div>
+          </div>
+  
+          <div *ngSwitchDefault>
+            <ul>
+              <li *ngFor="let task of data.services[servicePageSelected]">
+                <mat-checkbox class="checkBox"
+                  [checked]="isChecked(task,selectedService!.service[servicePageSelected].tasks)" [name]="task"
+                  [color]="'primary'" (click)="addToSelectedService($event.target)">
+                  {{task}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Piece content -->
+      <div *ngSwitchCase="'piece'">
+        <ul class="piece_container">
+          <li *ngFor="let piece of data.piece">
+            <mat-checkbox class="checkBox lol" [checked]="isChecked(piece,selectedService!.piece.tasks)" [name]="piece"
+              [color]="'primary'" (click)="addToSelectedService($event.target)">
+              {{piece}}
+            </mat-checkbox>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Groupe content -->
+      <div *ngSwitchCase="'groupe'">
+        <p>Groupe page work</p>
+      </div>
+    </div>
+  
+    <div class="button_container">
+      <button mat-raised-button class="send_button" (click)="showSelected()">Ajouter</button>
+    </div>
+  </div>
+
+</div>

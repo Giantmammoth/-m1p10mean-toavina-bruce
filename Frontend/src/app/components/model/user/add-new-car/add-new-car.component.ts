@@ -3,7 +3,7 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-add-new-car',
   templateUrl: './add-new-car.component.html',
-  styleUrls: ['./add-new-car.component.css']
+  styleUrls: ['./add-new-car.component.css', './add-new-car.component.scss']
 })
 export class AddNewCarComponent {
 

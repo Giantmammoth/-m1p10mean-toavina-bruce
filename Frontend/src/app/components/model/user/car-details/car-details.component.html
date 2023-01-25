@@ -1,84 +1,121 @@
 <div class="details_container">
-  <div class="title">
+
+  <nav class="box_container">
     <ul>
-      <li *ngFor="let title of titles" [class.selected]="title === selected" (click)="setSelected(title)">
-        {{title}}
+      <li *ngFor="let nav of navigation" (click)="[changePage(nav.label)]" [class.isActive]="nav === pageSelected">
+        <mat-icon> {{nav.icon}} </mat-icon>
+        <p> {{nav.label}} </p>
       </li>
     </ul>
-  </div>
-  <div [ngSwitch]="selected">
-    <!-- -----------------     Details    ------------------ -->
-    <div class="details info_container" *ngSwitchCase="'Details'">
-      <div class="info">
-        <h3>Details container</h3>
-        <div class="details" *ngIf="detail">
-          <h3>Marque :</h3>
-          <p> {{detail.marque}} </p>
-          <h3>Imatriculation :</h3>
-          <p> {{detail.im}} </p>
-          <h3>Année :</h3>
-          <p> {{detail.annee}} </p>
-          <h3>Puissance moteur :</h3>
-          <p> {{detail.moteur}} </p>
-          <h3>Type de moteur :</h3>
-          <p> {{detail.type_moteur}} </p>
-          <h3>Transmission :</h3>
-          <p> {{detail.transmission}} </p>
-          <h3>Couleur :</h3>
-          <p> {{detail.couleur}} </p>
-          <button mat-raised-button color="primary">Primary</button>
+  </nav>
+
+  <div class="car_info_container box_container">
+    <div [ngSwitch]="pageSelected">
+      <!-- Page d'affichage de detail consernant la voiture -->
+      <div *ngSwitchCase="'details'">
+        <div class="car_info_container" *ngIf="detail">
+          <div class="car_id">
+            <p class="marque"> {{detail.marque}} </p>
+            <p class="immatriculation"> {{detail.im}} </p>
+          </div>
+          <div class="car_info">
+            <div>
+              <h4>Année :</h4>
+              <p> {{detail.annee}} </p>
+            </div>
+            <div>
+              <h4>Puissance moteur :</h4>
+              <p> {{detail.moteur}} </p>
+            </div>
+            <div>
+              <h4>Type de moteur :</h4>
+              <p> {{detail.type_moteur}} </p>
+            </div>
+            <div>
+              <h4>Transmission :</h4>
+              <p> {{detail.transmission}} </p>
+            </div>
+            <div>
+              <h4>Couleur :</h4>
+              <p> {{detail.couleur}} </p>
+            </div>
+          </div>
+          <div class="button_container">
+            <button class="button_icon_car" mat-raised-button matTooltip="Voir les réparations"
+              (click)="pageSelected = 'reparation_list'">
+              <img class="tow_car_icon" src="../../../../../assets/icons/detail.png" alt="tow car">
+            </button>
+            <button class="button_icon_car" mat-raised-button matTooltip="Envoyer en réparation">
+              <img class="tow_car_icon" src="../../../../../assets/icons/tow-truck.png" alt="tow car">
+            </button>
+          </div>
         </div>
       </div>
-      <div class="repair_list">
-        <h3>Repairing list</h3>
-      </div>
-    </div>
 
-    <!-- -----------------     History    ------------------ -->
-    <div class="details" *ngSwitchCase="'History'">
-      <h3>History container</h3>
-      <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource">
+      <!-- Réparation list -->
+      <div class="reparation_list" *ngSwitchCase="'reparation_list'">
+        <div>
+          <div class="title">
+            Liste des réparations
+          </div>
+          <div class="lists">
+            <ul>
+              <li>
+                <p class="reparation">
+                  Changement filtre a essence
+                </p>
+                <p class="status">
+                  Prêt
+                </p>
+              </li>
+              <li>
+                <p class="reparation">
+                  Entretien pneus
+                </p>
+                <p class="status">
+                  En cours
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-          <!-- Position Column -->
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef> No. </th>
-            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-          </ng-container>
+        <div class="loading">
+          <p>Avancement</p>
+          <div class="progress_bar_container">
+            <p> {{progress}} </p>
+            <div class="progressBar">
+              <div class="progress" [ngStyle]="progressBar()"></div>
+            </div>
+          </div>
+        </div>
 
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-          </ng-container>
-
-          <!-- Weight Column -->
-          <ng-container matColumnDef="weight">
-            <th mat-header-cell *matHeaderCellDef> Weight </th>
-            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-          </ng-container>
-
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef> Symbol </th>
-            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[2,4,6,8]" showFirstLastButtons aria-label="Select page of periodic elements">
-        </mat-paginator>
       </div>
 
+      <!-- Page d'ajout de nouveau voiture -->
+      <div *ngSwitchCase="'add'">
+        <app-add-new-car></app-add-new-car>
+      </div>
+
+
+      <!-- Page d'affichage des listes de facture -->
+      <div *ngSwitchCase="'facture'">
+        <div>
+          <p>Facture page</p>
+        </div>
+      </div>
+
+      <!-- Page d'affichage d'historique -->
+      <div *ngSwitchCase="'historique'">
+        <div>
+          <p>Historique page</p>
+        </div>
+      </div>
 
     </div>
 
-    <!-- -----------------     Maintenance    ------------------ -->
-    <div class="details" *ngSwitchCase="'Maintenance'">
-      <h3>Maintenance container</h3>
-    </div>
+
+
   </div>
 
 </div>

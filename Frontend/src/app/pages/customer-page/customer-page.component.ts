@@ -10,17 +10,6 @@ import { Car } from './car';
 
 export class CustomerPageComponent {
 
-  /* add button status */
-  add_button_status = {
-    status: true,
-    text: "add"
-  }
-  toggleAddButtonStatus(): void {
-    this.add_button_status.status = !this.add_button_status.status
-    this.add_button_status.text = this.add_button_status.status ? "add" : "close";
-  }
-  /* ----------------- */
-
   myCars: Car[] = [
     {
       im: "1235MD",
@@ -56,8 +45,9 @@ export class CustomerPageComponent {
 
   car_details?: Car;
 
-  viewDetails(car: Car): void {
+  viewDetails(car: Car, pageToShow: any): void {
     this.car_details = car;
+    pageToShow.pageSelected = "details"
   }
 
   @ViewChild('inputTest') input?: ElementRef<HTMLInputElement>;
@@ -65,7 +55,6 @@ export class CustomerPageComponent {
   hello(): void {
     console.log(this.input?.nativeElement.value);
   }
-
 
 
 }

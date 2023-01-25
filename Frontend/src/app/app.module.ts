@@ -9,7 +9,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HomeRAComponent } from './pages/adminRA/home-ra/home-ra.component';
-import { PersonalManagmentComponent } from './pages/adminRA/personal-managment/personal-managment.component';
 import { FormsModule } from '@angular/forms';
 import { SignInComponent } from './pages/login-page/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/login-page/sign-up/sign-up.component';
@@ -28,6 +27,11 @@ import { CarHistoryComponent } from './components/model/user/car-history/car-his
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ServicesComponent } from './components/model/user/services/services.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TableComponent } from './components/model/all/table/table.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,13 +39,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     FooterComponent,
     HomePageComponent,
     HomeRAComponent,
-    PersonalManagmentComponent,
     SignInComponent,
     SignUpComponent,
     CustomerPageComponent,
     AddNewCarComponent,
     CarDetailsComponent,
     CarHistoryComponent,
+    ServicesComponent,
+    TableComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +65,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatButtonToggleModule,
     MatTableModule,
     MatPaginatorModule,
-
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

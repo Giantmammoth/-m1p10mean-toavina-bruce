@@ -2,7 +2,8 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100vw;
+  width: 100%;
+  background-color: red;
 }
 
 header div {
@@ -10,17 +11,7 @@ header div {
   margin-right: 40px;
 }
 
-.logo {
-  font-family: 'InspirationRegular';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 60px;
-  line-height: 76px;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #ffffff;
-}
+
 
 .login_button_container {
   display: flex;

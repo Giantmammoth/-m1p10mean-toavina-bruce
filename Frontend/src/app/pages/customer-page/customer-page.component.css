@@ -1,80 +1,119 @@
 /* page container style */
 .customer_page_container {
   display: flex;
-}
-
-/* Same style for all container */
-.car_list_container,
-.garage_services_container,
-.info_container {
-  height: 100vh;
-}
-
-
-/* car list style */
-.car_list_container {
-  background-color: rgba(0, 255, 255, 0.4);
-  width: 20vw;
-}
-
-.title {
-  position: relative;
-  display: flex;
+  justify-content: center;
   align-items: center;
+  background-color: rgb(3, 3, 19, 0.5);
+  width: 100vw;
+  height: 100%;
+}
+
+.logo {
+  position: absolute;
+  width: 120px;
+  height: 100px;
+  left: 70px;
+  top: 20px;
+}
+
+.content_container {
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  height: 70%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 100%;
+}
+
+.detail,
+.car_list {
+  height: 100%;
+}
+
+.box_container {
+  margin: 10px 10px;
+}
+
+/* Car list style */
+.title {
+  display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid black;
-  margin: 0px 5px;
+  padding: 20px 10px 5px 20px;
+  border-bottom: 1px solid rgba(3, 3, 18, 0.2);
+}
+
+.title>h2,
+.title>button {
+  margin: 0px;
+  padding: 0px;
 }
 
 .title>h2 {
-  margin: 0px;
-  padding: 0px;
+  font-family: "Inter";
+  font-weight: bold;
+  font-size: 27px;
 }
 
-.title>#add_icon {
+#add_icon {
   width: 25px;
   height: 25px;
-  background-color: rgb(0, 106, 106);
-}
-
-.car_list_container>#add_icon>mat-icon {
-  color: white;
-}
-
-.car_list_container p {
-  margin: 0px 20px;
-  padding: 0;
-  line-height: 18px;
-  font-weight: 800;
+  color: black;
+  background-color: transparent;
 }
 
 .car {
-  background-color: rgba(0, 255, 255, 0.5);
-  margin: 10px;
-  padding: 10px 0px;
-  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(3, 3, 18, 0.2);
+  cursor: pointer;
 }
 
-.marque {
-  font-size: larger;
-  font-style: "Inter", "Arial black";
+.status {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-.matricule {
-  font-size: small;
-  color: rgb(67, 65, 65);
+.status>p {
+  font-family: 'Inter';
+  font-size: 10px;
+  font-style: italic;
+  font-weight: bold;
+  color: rgb(113, 113, 115);
 }
 
-/* details_container style */
+.button_icon_car {
+  background-color: rgba(240, 248, 255, 0.689);
+  width: 25px;
+  height: 25px;
+}
 
-.info-container {
-  width: 40vw;
+.tow_car_icon {
+  width: 20px;
+  height: 20px;
   margin: 0px;
   padding: 0px;
 }
 
-/* Garage service style */
-.garage_services_container {
-  background-color: rgb(79, 251, 194);
-  width: 40vw;
+.marque,
+.matricule {
+  font-style: "Inter";
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.8);
+  margin: 0px;
+  padding: 0px;
+}
+
+.detail {
+  height: 100%;
+  overflow: hidden;
 }

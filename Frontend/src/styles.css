@@ -5,6 +5,11 @@
 }
 
 @font-face {
+  font-family: "Open sans";
+  src: url("./assets/font/OpenSans/OpenSans-Bold.ttf");
+}
+
+@font-face {
   font-family: "Istok Web";
   src: url("./assets/font/IstokWeb/IstokWeb-Regular.ttf");
 }
@@ -30,5 +35,70 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.box_container {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 2px rgb(3, 3, 19);
+}
+
+.logo {
+  font-family: 'InspirationRegular';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 80px;
+  line-height: 80px;
+  color: #ffffff;
+}
+
+.bg_container {
+  background-image: url("./assets/images/Giantmammoth_mechanic_in_madagascar_59f2d619-cff6-4de5-928b-069d852233e6.png");
+  width: 100vw;
+  height: 100vh;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+/* scroll bar style */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

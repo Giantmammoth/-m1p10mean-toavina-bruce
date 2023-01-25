@@ -1,5 +1,23 @@
-<div class="app-container">
-  <div class="calque">
-    <app-header></app-header>
+<div class="app_container">
+  <div class="bg_container">
+    <div class="logo">Garage</div>
+    <!-- <app-header></app-header> -->
+    <div class="welcome_container">
+      <p>“ Confiez-nous votre voiture, des réparations rapides pour vous remettre sur la route en toute confiance. ”</p>
+      <div class="button_container">
+        <button mat-raised-button id="signUp" routerLink="/signUp">Inscrivez vous</button>
+        <button mat-raised-button id="signIn" routerLink="/signIn">Se connecter</button>
+      </div>
+    </div>
+
+    <div class="test">
+      <h3 style="color: white; font-size: 32px; font-weight: bold;">Test link</h3>
+      <div class="button_container">
+        <button mat-raised-button color="primary" routerLink="/customer">Cu</button>
+        <button mat-raised-button style="margin-left: 5px;" id="signUp" routerLink="/adminResponsableAtelier">RA</button>
+        <button mat-raised-button id="signIn" routerLink="/adminResponsableFinancier">RF</button>
+      </div>
+    </div>
+    
   </div>
 </div>

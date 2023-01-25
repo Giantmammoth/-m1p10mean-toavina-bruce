@@ -1,15 +1,50 @@
 const Car = require('../models/car.model')
 const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model')
+const sendMail = require ('../middleware/sendmail')
 
 
+function addDays(date, days) {
+    const parts = date.split("/");
+    const d = new Date(parts[2], parts[1] - 1, parts[0]);
+    d.setDate(d.getDate() + days);
+    const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
+    return newDate;
+}
 
 
 exports.depotCar = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
-        if (!user)
-            return res.status(409).send({ message: "User do not Exist!" });
+    const user = await User.findById(req.params.id)
+    if (!user)
+        return res.status(409).send({ message: "User do not Exist!" });
+
+    const timeElapsed = Date.now();
+    const today = new Date(timeElapsed);
+
+    const car = new Car({
+        ...req.body,
+        user: user._id,
+        userName: user.fullName,
+        dateDepot: today.toLocaleDateString(),
+    })
+    await car.save();
+    return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
+
+    }
+    catch (error) {
+        console.log(error)
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+}
+
+
+exports.updateListReparation = async (req, res) => {
+    try {
+
+        const car = await Car.findById(req.params.id)
+        if (!car)
+            return res.status(404).send({ message: "Car not found" })
 
         let repareArray = []
         let price = []
@@ -24,53 +59,18 @@ exports.depotCar = async (req, res) => {
             price.push(element.prix)
             delaiArray.push(element.delai)
         });
-
         let intArray = price.map(str => parseInt(str));
         let finalprice = intArray.reduce((a, b) => a + b);
 
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
+        await Car.updateOne({_id: req.params.id}, {$set: {listReparation: repareArray, totalPrix: finalprice }})
+        return res.status(200).send({ message: 'Liste réparation envoyé' });
 
-        const car = new Car({
-            ...req.body,
-            listReparation: repareArray,
-            totalPrix: finalprice,
-            user: user._id,
-            userName: user.lastName + ' ' + user.firstName,
-            dateDepot: today.toLocaleDateString(),
-        })
-        console.log(car)
-        await car.save();
-
-        const facture = new Facture({
-            idCar: car._id,
-            model: car.model,
-            type: car.type,
-            matricule: car.matricule,
-            listReparation: repareArray,
-            totalPrix: finalprice,
-            dateDepot: car.dateDepot,
-            user: car.user,
-            userName: car.userName
-        })
-        await facture.save()
-        return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
     }
     catch (error) {
         console.log(error)
         res.status(500).send({ message: "Internal Server Error" });
     }
 }
-
-// function calculateDelay(date1, date2) {
-//     var date1Arr = date1.split("/");
-//     var date2Arr = date2.split("/");
-//     var date1 = new Date(date1Arr[2], date1Arr[1] - 1, date1Arr[0]);
-//     var date2 = new Date(date2Arr[2], date2Arr[1] - 1, date2Arr[0]);
-//     var diffTemps = Math.abs(date2.getTime() - date1.getTime());
-//     var diffJours = Math.ceil(diffTemps / (1000 * 3600 * 24));
-//     return diffJours;
-// }
 
 function convertDateToMilliseconds(dateString) {
     let dateArr = dateString.split("/");
@@ -83,6 +83,9 @@ exports.progressPercentage = async (req, res) => {
         const car = await Car.findById(req.params.id)
         if (!car)
             return res.status(404).send({ message: "Car not found" })
+
+        if (car.start == false)
+            return res.status(404).send({ message: "Facture non payé" })
 
         // const timeElapsed = Date.now();
         // const today = new Date(timeElapsed);

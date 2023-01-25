@@ -1,27 +1,37 @@
-.new_car_container {
-  background-color: rgb(0, 255, 255);
-  width: 40vw;
+.add_container {
+  height: 100%;
+  width: 100%;
 }
 
-.new_car_container h2 {
-  margin: 0px 5px 30px 5px;
-  border-bottom: 1px solid black;
-}
-
-.form_container {
+form {
   display: flex;
   flex-direction: column;
+  padding: 20px;
 }
 
-mat-label {
-  color: black;
+form div {
+  display: flex;
+  margin: 5px 0px;
 }
 
-mat-form-field,
+label {
+  width: 20%;
+  flex-grow: 1;
+  font-family: "Inter";
+  font-weight: bold;
+  font-size: 15px;
+}
+
+input {
+  flex-grow: 1;
+  font-size: 15px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
 button {
-  margin: 0px 10px;
-}
-
-mat-form-field input {
-  margin: 0px;
+  margin: 20px 0px;
 }

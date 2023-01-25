@@ -1,3 +1,32 @@
+nav ul,
+nav li {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+nav li {
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 15px;
+
+  &:hover {
+    background-color: rgba(240, 248, 255, 0.412);
+  }
+}
+
+nav li p {
+  margin: 0px;
+  padding: 0px;
+  font-weight: bold;
+  font-family: "Inter";
+  font-size: 12px;
+  line-height: 10px;
+}
+
 .title li {
   font-size: 20px;
   font-weight: 500;
