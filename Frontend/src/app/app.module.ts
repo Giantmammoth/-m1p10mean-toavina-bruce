@@ -32,6 +32,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TableComponent } from './components/model/all/table/table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ShowDetailsComponent } from './components/model/user/show-details/show-details.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +51,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CarHistoryComponent,
     ServicesComponent,
     TableComponent,
+    ShowDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +72,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatPaginatorModule,
     MatTooltipModule,
     MatProgressBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

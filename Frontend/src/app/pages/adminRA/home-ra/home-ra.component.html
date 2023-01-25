@@ -1,5 +1,7 @@
 <div class="main_container">
 
+  <div class="logo">Garage</div>
+
   <div class="container_list">
 
     <div class="title box_container">
@@ -11,20 +13,30 @@
 
     <div class="container_info">
       <div class="container box_container">
-        <h2>Listes des voitures</h2>
         <div cdkDropList #waittingList="cdkDropList" [cdkDropListData]="cars" [cdkDropListConnectedTo]="loadingList"
           class="list" (cdkDropListDropped)="drop($event)">
 
-          <div class="list-item" *ngFor="let car of cars" (click)="[changeSelectedCar(car)]" cdkDrag>
-            <div>
-              <p class="marque"> {{car.marque}} </p>
-              <p class="matricule"> {{car.im}} </p>
-            </div>
-            <div class="status">
-              <p>Status</p>
-            </div>
-          </div>
+          <mat-drawer-container class="container-side" autosize>
+            <mat-drawer #detailsPage [(opened)]="openDetailsPage" class="sidenav box_container" mode="push">
+              <app-show-details [openDetailsPage]="detailsPage"></app-show-details>
+            </mat-drawer>
 
+
+            <div class="sidenav-content">
+              <h2>Listes des voitures</h2>
+              <div class="list-item" *ngFor="let car of cars" [class.isSelected]="car === selectedCar"
+                (click)="[changeSelectedCar(car)]" cdkDrag>
+                <div>
+                  <p class="marque"> {{car.marque}} </p>
+                  <p class="matricule"> {{car.im}} </p>
+                </div>
+                <div class="status">
+                  <p>Status</p>
+                </div>
+              </div>
+            </div>
+
+          </mat-drawer-container>
         </div>
       </div>
 
@@ -36,22 +48,21 @@
 
             <mat-drawer-container class="container-side" autosize>
 
-              <mat-drawer #drawer [opened]="openControllerPage" class="sidenav box_container" mode="push">
-                <app-services [selectedService]="selectedCar.reparation" [closePage]="openControllerPage"></app-services>
+              <mat-drawer #controllerPage [(opened)]="openControllerPage" class="sidenav box_container" mode="push">
+                <app-services [selectedService]="selectedCar.reparation"
+                  [openControllerPage]="controllerPage"></app-services>
               </mat-drawer>
 
               <div class="sidenav-content">
                 <h2>En cours de réparation</h2>
-                <div class="list-item" *ngFor="let car of enCours" cdkDrag>
+                <div class="list-item" *ngFor="let car of enCours" (click)="changeCarSelectedToShowDetails(car)"
+                  cdkDrag>
                   <div>
                     <p class="marque"> {{car.marque}} </p>
                     <p class="matricule"> {{car.im}} </p>
                   </div>
                   <div class="status">
                     <p>Status</p>
-                    <button class="button_icon_car" (click)="$event.stopPropagation()" mat-raised-button>
-                      Show repair list
-                    </button>
                   </div>
                 </div>
 

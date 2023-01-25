@@ -1,0 +1,98 @@
+.details_container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 10px 5px 20px;
+  border-bottom: 1px solid rgba(3, 3, 21, 0.5);
+}
+
+.header>h2 {
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px;
+}
+
+.close_button {
+  height: 25px;
+  width: 25px;
+  background-color: transparent;
+  color: black;
+}
+
+.content_container {
+  height: 80%;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.content {
+  height: 100%;
+  overflow-x: hidden;
+  background-color: transparent;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 3px 40px;
+  margin: 0px;
+  cursor: pointer;
+  transition: background-color 100ms, font-size 100ms;
+}
+
+.item:hover {
+  font-size: 15px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 10px 0px 0px 20px;
+  margin: 0px;
+  color: rgba(3, 3, 21, 1);
+}
+
+.item p {
+  font-weight: 300;
+  text-transform: lowercase;
+  margin: 0px;
+  padding: 0px;
+}
+
+.loading {
+  height: 20px !important;
+  width: 20px !important;
+}
+
+.piece_item {
+  width: 100%;
+  padding: 3px 40px;
+  margin: 0px;
+}
+
+.piece_item p {
+  font-weight: 300;
+  text-transform: lowercase;
+  margin: 0px;
+  padding: 0px;
+}
+
+.confirm_button {
+  height: 30px;
+  background-color: black !important;
+  color: white !important;
+  margin: 10px;
+}

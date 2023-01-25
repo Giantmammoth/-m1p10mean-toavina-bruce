@@ -1,0 +1,16 @@
+.isSelected {
+  background-color: rgba(3, 3, 21, 0.5);
+  color: white;
+
+  & .status p {
+    color: white;
+  }
+
+  &:hover {
+    background-color: rgba(3, 3, 21, 0.45);
+  }
+
+  &:hover .status p {
+    color: white;
+  }
+}

@@ -5,14 +5,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./services.component.css', './services.component.scss']
 })
 export class ServicesComponent {
-  @Input() closePage?: boolean;
-  closeControllerPage():void {
-    console.log(this.closePage);
-    this.closePage = false;
-    console.log(this.closePage);
+  @Input() openControllerPage?: any;
+  closeControllerPage(): void {
+    this.openControllerPage.opened = false;
   }
-  /* 
-  * 
+  /*
+  *
   */
 
   /*
@@ -26,11 +24,11 @@ export class ServicesComponent {
     {
       label: "piece",
       icon: "extension"
-    }, 
+    },
     {
       label: "service",
       icon: "list"
-    }, 
+    },
     {
       label: "add",
       icon: "add"

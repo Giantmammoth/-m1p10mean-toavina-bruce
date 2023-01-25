@@ -5,7 +5,7 @@ import { GarageServicesModel } from 'src/app/components/model/user/services/gara
 @Component({
   selector: 'app-home-ra',
   templateUrl: './home-ra.component.html',
-  styleUrls: ['./home-ra.component.css'],
+  styleUrls: ['./home-ra.component.css', './home-ra.component.scss'],
 })
 export class HomeRAComponent {
   cars: Car[] = [
@@ -65,23 +65,20 @@ export class HomeRAComponent {
     }
   }
 
-
-  /* ---------- show page ----------- */
-  showServicePage: boolean = true;
-  setShowServicePage(show: boolean): void {
-    this.showServicePage = show
-  }
-
-  show() {
-    console.log("click")
-  }
-
   /* ---------- On select car ----------- */
 
   openControllerPage: boolean = false;
   selectedCar: Car = this.cars[0];
-  changeSelectedCar(car: Car):void{
-    if(this.selectedCar !== car) this.selectedCar = car;
+  changeSelectedCar(car: Car): void {
+    if (this.selectedCar !== car) this.selectedCar = car;
     this.openControllerPage = true;
   }
+
+  openDetailsPage: boolean = false;
+  carSelectedToShowDetails: Car = this.enCours[0];
+  changeCarSelectedToShowDetails(car: Car): void {
+    if (this.carSelectedToShowDetails !== car) this.carSelectedToShowDetails = car;
+    this.openDetailsPage = true;
+  }
+
 }
