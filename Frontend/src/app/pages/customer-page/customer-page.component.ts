@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { Car } from './car';
+import { CustomerService } from 'src/app/services/customerService/customer.service';
+import { Car } from '../../services/customerService/car';
 
 @Component({
   selector: 'app-customer-page',
@@ -9,41 +10,14 @@ import { Car } from './car';
 
 
 export class CustomerPageComponent {
-
-  myCars: Car[] = [
-    {
-      im: "1235MD",
-      marque: "Maruti Swift Dzire VDI",
-      annee: "2014",
-      moteur: "1248 CC",
-      type_moteur: "Diesel",
-      transmission: "Manual",
-      couleur: "gris",
-      reparation: [""]
-    },
-    {
-      im: "5568MC",
-      marque: "Skoda Rapid 1.5 TDI Ambition",
-      annee: "2014",
-      moteur: "1498 CC",
-      type_moteur: "Diesel",
-      transmission: "Manual",
-      couleur: "gris metalique",
-      reparation: [""]
-    },
-    {
-      im: "9876WWT",
-      marque: "Honda City 2017-2020 EXi",
-      annee: "2006",
-      moteur: "1497 CC",
-      type_moteur: "Petrol",
-      transmission: "Manual",
-      couleur: "blanc cassé",
-      reparation: [""]
-    }
-  ];
-
+  myCars: Car[] = [];
   car_details?: Car;
+
+  constructor(private customerService: CustomerService) { }
+  ngOnInit(): void {
+    this.customerService.getCars().subscribe(cars => this.myCars = cars);
+  }
+
 
   viewDetails(car: Car, pageToShow: any): void {
     this.car_details = car;

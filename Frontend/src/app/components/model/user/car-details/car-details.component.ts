@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Car } from 'src/app/pages/customer-page/car';
+import { Car } from 'src/app/services/customerService/car';
 
 @Component({
   selector: 'app-car-details',

@@ -1,0 +1,42 @@
+<div class="container_tableau box_container">
+  <div class="search_container" for="search">
+    <select name="filter" id="filter" [(ngModel)]="filterSelected">
+      <option [value]="select" *ngFor="let select of headerColumn">
+        {{ select }}
+      </option>
+    </select>
+    <input [type]="searhInputType()" class="search" name="search" id="search" [(ngModel)]="filter"
+      (input)="filterData()">
+  </div>
+
+  <mat-drawer-container class="container-side" autosize>
+    <!-- side content -->
+    <mat-drawer #side position="end" mode="side">
+      <div class="details_container">
+        <h1>hello world</h1>
+      </div>
+    </mat-drawer>
+
+    <div class="table">
+
+      <div class="thead">
+        <div class="row">
+          <div class="col" *ngFor="let head of headerColumn">
+            {{head}}
+          </div>
+        </div>
+      </div>
+
+      <div class="tbody">
+        <div class="row" *ngFor="let data of dataToShow; let o = odd" (click)="side.toggle()">
+          <div class="col" [class.isEven]="o" *ngFor="let key of headerColumn">
+            {{data[key]}}
+          </div>
+        </div>
+      </div>
+      <div class="tfoot">
+
+      </div>
+    </div>
+  </mat-drawer-container>
+</div>

@@ -52,5 +52,22 @@ nav ul li {
 
 .page_container {
   flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   margin: 0px 5px;
+}
+
+.page_container>h2 {
+  font-family: "Inter";
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0px;
+  margin-bottom: 10px;
+  padding: 10px 0px;
+}
+
+.tableau {
+  height: 90%;
 }

@@ -35,7 +35,8 @@ import { ShowDetailsComponent } from './components/model/user/show-details/show-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HomeRFComponent } from './pages/adminRF/home-rf/home-rf.component';
 import { MatSortModule } from '@angular/material/sort';
-import { TableComponent } from './components/model/all/table/table.component';
+import { TableauComponent } from './components/model/all/tableau/tableau.component';
+import { FactureComponent } from './components/model/all/facture/facture.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { TableComponent } from './components/model/all/table/table.component';
     ServicesComponent,
     ShowDetailsComponent,
     HomeRFComponent,
-    TableComponent,
+    TableauComponent,
+    FactureComponent,
   ],
   imports: [
     BrowserModule,
