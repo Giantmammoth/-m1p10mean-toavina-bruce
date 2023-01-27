@@ -12,7 +12,7 @@ import { HomeRAComponent } from './pages/adminRA/home-ra/home-ra.component';
 import { FormsModule } from '@angular/forms';
 import { SignInComponent } from './pages/login-page/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/login-page/sign-up/sign-up.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomerPageComponent } from './pages/customer-page/customer-page.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -37,7 +37,15 @@ import { HomeRFComponent } from './pages/adminRF/home-rf/home-rf.component';
 import { MatSortModule } from '@angular/material/sort';
 import { TableauComponent } from './components/model/all/tableau/tableau.component';
 import { FactureComponent } from './components/model/all/facture/facture.component';
+import { WebRequestInterceptor } from './services/webRequest/web-request.interceptor.service';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
+const config: SocketIoConfig = {
+  url: "http://localhost:5000/", // socket server url;
+  options: {
+    transports: ['websocket']
+  }
+}
 
 @NgModule({
   declarations: [
@@ -79,9 +87,12 @@ import { FactureComponent } from './components/model/all/facture/facture.compone
     MatProgressBarModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatSortModule
+    MatSortModule,
+    SocketIoModule.forRoot(config),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: WebRequestInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

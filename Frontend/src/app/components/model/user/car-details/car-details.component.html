@@ -15,37 +15,23 @@
       <div *ngSwitchCase="'details'">
         <div class="car_info_container" *ngIf="detail">
           <div class="car_id">
-            <p class="marque"> {{detail.marque}} </p>
-            <p class="immatriculation"> {{detail.im}} </p>
+            <p class="marque"> {{detail.model}} </p>
+            <p class="immatriculation"> {{detail.matricule}} </p>
           </div>
           <div class="car_info">
             <div>
-              <h4>Année :</h4>
-              <p> {{detail.annee}} </p>
+              <h4>Type :</h4>
+              <p> {{detail.type}} </p>
             </div>
-            <div>
-              <h4>Puissance moteur :</h4>
-              <p> {{detail.moteur}} </p>
-            </div>
-            <div>
-              <h4>Type de moteur :</h4>
-              <p> {{detail.type_moteur}} </p>
-            </div>
-            <div>
-              <h4>Transmission :</h4>
-              <p> {{detail.transmission}} </p>
-            </div>
-            <div>
-              <h4>Couleur :</h4>
-              <p> {{detail.couleur}} </p>
-            </div>
+
           </div>
           <div class="button_container">
             <button class="button_icon_car" mat-raised-button matTooltip="Voir les réparations"
               (click)="pageSelected = 'reparation_list'">
               <img class="tow_car_icon" src="../../../../../assets/icons/detail.png" alt="tow car">
             </button>
-            <button class="button_icon_car" mat-raised-button matTooltip="Envoyer en réparation">
+            <button class="button_icon_car" mat-raised-button matTooltip="Envoyer en réparation"
+              (click)="sendToGarage(detail.matricule)">
               <img class="tow_car_icon" src="../../../../../assets/icons/tow-truck.png" alt="tow car">
             </button>
           </div>

@@ -27,8 +27,8 @@
               <div class="list-item" *ngFor="let car of cars" [class.isSelected]="car === selectedCar"
                 (click)="[changeSelectedCar(car)]" cdkDrag>
                 <div>
-                  <p class="marque"> {{car.marque}} </p>
-                  <p class="matricule"> {{car.im}} </p>
+                  <p class="marque"> {{car.model}} </p>
+                  <p class="matricule"> {{car.matricule}} </p>
                 </div>
                 <div class="status">
                   <p>Status</p>
@@ -58,8 +58,8 @@
                 <div class="list-item" *ngFor="let car of enCours" (click)="changeCarSelectedToShowDetails(car)"
                   cdkDrag>
                   <div>
-                    <p class="marque"> {{car.marque}} </p>
-                    <p class="matricule"> {{car.im}} </p>
+                    <p class="marque"> {{car.model}} </p>
+                    <p class="matricule"> {{car.matricule}} </p>
                   </div>
                   <div class="status">
                     <p>Status</p>

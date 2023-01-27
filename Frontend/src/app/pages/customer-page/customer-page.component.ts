@@ -1,4 +1,7 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { shareReplay, tap } from 'rxjs';
 import { CustomerService } from 'src/app/services/customerService/customer.service';
 import { Car } from '../../services/customerService/car';
 
@@ -10,14 +13,19 @@ import { Car } from '../../services/customerService/car';
 
 
 export class CustomerPageComponent {
-  myCars: Car[] = [];
-  car_details?: Car;
+  myCars: any = [];
+  car_details?: any;
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private customerService: CustomerService, private router: Router) { }
   ngOnInit(): void {
-    this.customerService.getCars().subscribe(cars => this.myCars = cars);
+    this.customerService.getCars().subscribe(cars => {
+      this.myCars = cars
+    });
   }
 
+  showMessage() {
+    this.customerService.message("test socket service is get ready");
+  }
 
   viewDetails(car: Car, pageToShow: any): void {
     this.car_details = car;

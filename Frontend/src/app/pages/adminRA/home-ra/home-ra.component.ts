@@ -9,27 +9,21 @@ import { RaService } from 'src/app/services/raService/ra.service';
   styleUrls: ['./home-ra.component.css', './home-ra.component.scss'],
 })
 export class HomeRAComponent {
-  cars: Car[] = [];
+  cars: any = [];
 
-  constructor(private garageService: RaService) { }
+  constructor(private garageService: RaService) {
+
+  }
 
   ngOnInit(): void {
-    this.garageService.getCars().subscribe(cars => this.cars = cars);
+    /* this.garageService.getCars().subscribe(cars => this.cars = cars); */
+    this.garageService.newData().subscribe(data => {
+      this.cars = this.cars.concat(data);
+    })
   }
 
 
-  enCours: Car[] = [
-    {
-      im: "9876WWT",
-      marque: "Honda City 2017-2020 EXi",
-      annee: "2006",
-      moteur: "1497 CC",
-      type_moteur: "Petrol",
-      transmission: "Manual",
-      couleur: "blanc cassé",
-      reparation: new GarageServicesModel().getServicesModel()
-    }
-  ]
+  enCours: any = []
 
   drop(event: CdkDragDrop<Car[] | any>): void {
     if (event.previousContainer === event.container) {

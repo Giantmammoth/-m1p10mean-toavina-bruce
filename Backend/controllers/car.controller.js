@@ -1,8 +1,9 @@
-const Car = require('../models/car.model')
+const Car = require('../models/car.model');
+const Token = require('../models/token.model');
 const { User } = require('../models/user.model');
-const Facture = require('../models/facture.model')
-const sendMail = require ('../middleware/sendmail')
-
+const Facture = require('../models/facture.model');
+const sendMail = require('../middleware/sendmail');
+const socket = require('../server');
 
 function addDays(date, days) {
     const parts = date.split("/");
@@ -12,24 +13,65 @@ function addDays(date, days) {
     return newDate;
 }
 
+exports.getCarList = async (req, res) => {
+    try {
+        await Car.find({
+            user: req.user
+        }).then((carlist) => {
+            res.status(200).send(carlist);
+        }).catch(e => res.status(401).send(e));
+    } catch (e) {
+        console.log("Error : ", e);
+        res.status(500).send({ message: "Internal Server Error" })
+    };
+}
+
+
+exports.addNewCar = async (req, res) => {
+    try {
+        /*  socket.emit('data load', { messeage: 'Responsable Atelier Reception' }); */
+        const carAddedInfo = req.body;
+        await Car.find({
+            matricule: carAddedInfo.matricule,
+            user: req.user
+        }).then(async (car) => {
+            if (car.length === 0) {
+                const newCar = new Car({
+                    ...carAddedInfo,
+                    listReparation: [],
+                    user: req.user
+                });
+                await newCar.save();
+
+                /* socket.emit('data load', newCar); */
+
+                res.status(200).send({ data: newCar, message: "Your new car is added succefuly" });
+            } else {
+                res.send({ message: "this car is already add to your list" });
+            }
+        }).catch(e => res.status(401).send(e));
+    } catch (e) {
+        console.log("Error : ", e);
+        res.status(500).send({ message: "Internal Server Error" })
+    };
+}
 
 exports.depotCar = async (req, res) => {
     try {
-    const user = await User.findById(req.params.id)
-    if (!user)
-        return res.status(409).send({ message: "User do not Exist!" });
+        const user = await User.findById(req.params.id)
+        if (!user)
+            return res.status(409).send({ message: "User do not Exist!" });
 
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
 
-    const car = new Car({
-        ...req.body,
-        user: user._id,
-        userName: user.fullName,
-        dateDepot: today.toLocaleDateString(),
-    })
-    await car.save();
-    return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
+        const car = new Car({
+            ...req.body,
+            user: user._id,
+            dateDepot: today.toLocaleDateString(),
+        })
+        await car.save();
+        return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
 
     }
     catch (error) {
@@ -62,7 +104,7 @@ exports.updateListReparation = async (req, res) => {
         let intArray = price.map(str => parseInt(str));
         let finalprice = intArray.reduce((a, b) => a + b);
 
-        await Car.updateOne({_id: req.params.id}, {$set: {listReparation: repareArray, totalPrix: finalprice }})
+        await Car.updateOne({ _id: req.params.id }, { $set: { listReparation: repareArray, totalPrix: finalprice } })
         return res.status(200).send({ message: 'Liste réparation envoyé' });
 
     }

@@ -32,14 +32,14 @@ exports.statGarage = async (req, res) => {
         const operationDay = await Facture.find({ statue: true, dateDebut: today.toLocaleDateString() })
         if (operationDay.length === 0) {
             console.log("no operation today")
-        }else {
+        } else {
             operationDay.forEach(element => {
                 chiffreAffairedArray.push(element.totalPrix)
             })
             console.log(sommeArr(chiffreAffairedArray))
             chiffreAffaired = sommeArr(chiffreAffairedArray)
         }
-        
+
 
 
         // chiffre d'affaire mensuel 
@@ -47,7 +47,7 @@ exports.statGarage = async (req, res) => {
         let chiffreAffairemArray = []
         let chiffreAffairem = "0"
         const operationMonth = await Facture.find({ statue: true, dateDebut: new RegExp(mois) })
-        if (operationMonth.length === 0){
+        if (operationMonth.length === 0) {
             console.log("no operation this month")
         } else {
             operationMonth.forEach(element => {
@@ -56,7 +56,7 @@ exports.statGarage = async (req, res) => {
             console.log(sommeArr(chiffreAffairemArray))
             chiffreAffairem = sommeArr(chiffreAffairemArray)
         }
-        
+
 
         // depense 
 
@@ -84,6 +84,19 @@ exports.statGarage = async (req, res) => {
 
     }
     catch (error) {
+        console.log(error)
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+}
+
+
+exports.getCarListInGarage = async (req, res) => {
+    try {
+        await Car.find({
+            sendToGarage: true
+        }).then(cars => cars);
+
+    } catch (error) {
         console.log(error)
         res.status(500).send({ message: "Internal Server Error" });
     }

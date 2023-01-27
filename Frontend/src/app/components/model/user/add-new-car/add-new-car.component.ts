@@ -1,4 +1,5 @@
 import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { CustomerService } from 'src/app/services/customerService/customer.service';
 
 @Component({
   selector: 'app-add-new-car',
@@ -9,9 +10,23 @@ export class AddNewCarComponent {
 
   @Input() toggle?: boolean;
 
-  motor_type: string[] = ["Essence", "Diesel"]
-  transmission_type: string[] = ["Manuel", "Automatique"]
+  model?: string;
+  type?: string;
+  matricule?: string;
+  constructor(private customerService: CustomerService) { }
 
+  addCar() {
+    const data = {
+      model: this.model,
+      type: this.type,
+      matricule: this.matricule,
+    }
 
+    this.customerService.addNewCar(data).subscribe((res: any) => {
+      console.log(res)
+    })
+  }
 
 }
+
+

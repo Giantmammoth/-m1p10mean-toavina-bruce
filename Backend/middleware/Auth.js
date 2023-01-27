@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-	const token = req.header("x-auth-token");
+	const token = req.header('x-auth-token');
 	if (!token)
 		return res
 			.status(400)
-			.send({ message: "Accès non autoriser !" });
+			.send({ message: "Accès non autoriser !", data: "test" });
 
 	jwt.verify(token, process.env.JWTPRIVATEKEY, (err, validToken) => {
 		if (err) {

@@ -2,14 +2,33 @@ const bcrypt = require('bcrypt');
 const Joi = require("joi");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const {User, validate} = require('../models/user.model');
+const { User, validate } = require('../models/user.model');
 const Token = require('../models/token.model')
-const sendMail = require ('../middleware/sendmail')
+const sendMail = require('../middleware/sendmail')
+
+
+exports.getUser = async (req, res, next) => {
+	await User.find({}).then(response => {
+		res.status(200).send(response);
+	}).catch(e => {
+		console.log("there are some error in request : ", e)
+	})
+}
+
+exports.delete = async (req, res, next) => {
+	await User.findOneAndRemove({
+		email: req.body.email
+	}).then((removed) => {
+		res.status(200).send("Removed success:", removed);
+	}).catch(e => {
+		console.log("Error request : ", e)
+	})
+}
 
 
 exports.signup = async (req, res, next) => {
 
-    try {
+	try {
 		console.log(req.body)
 		const { error } = validate(req.body);
 		if (error)
@@ -45,17 +64,17 @@ exports.signup = async (req, res, next) => {
 exports.verifyAuth = async (req, res) => {
 	try {
 		const user = await User.findOne({ _id: req.params.id });
-		
+
 		if (!user) return res.status(400).send({ message: "Invalid id" });
 
 		const token = await Token.findOne({
 			userId: user._id,
 		});
-		
+
 		if (!token) return res.status(400).send({ message: "Invalid token" });
 
-		await User.updateOne({ _id: user._id }, { $set : {isVerify: true} });
-		await token.remove(); 
+		await User.updateOne({ _id: user._id }, { $set: { isVerify: true } });
+		await token.remove();
 
 		var message = "Votre compte a été vérifier, vous pouvez connecter désormais !";
 		await sendMail(user.email, "Validation du compte", message);
@@ -74,7 +93,7 @@ exports.login = async (req, res, next) => {
 		});
 		return schema.validate(data);
 	};
-    try {
+	try {
 		const { error } = validate(req.body);
 		if (error)
 			return res.status(400).send({ message: error.details[0].message });
@@ -92,10 +111,11 @@ exports.login = async (req, res, next) => {
 
 		if (!user.isVerify) {
 			return res.status(401).send({ message: "Un Email de vérification vous a été envoyer, veuiller vérifier s'il vous plait" });
-			}	
+		}
 		const token = user.generateAuthToken();
+		await new Token({ userId: user._id, token }).save()
 		res.status(200).send({ data: token, message: "Connexion reussi !" });
 	} catch (error) {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
- }; 
+}; 

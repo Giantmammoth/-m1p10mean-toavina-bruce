@@ -1,33 +1,18 @@
 <div class="add_container">
-  <form action="">
+  <div>
     <div>
-      <label for="marque">Marque : </label>
-      <input type="text" id="marque" name="marque">
+      <label for="marque">Model</label>
+      <input type="text" id="marque" name="marque" [(ngModel)]="model">
     </div>
     <div>
-      <label for="immatriculation">Immatriculation : </label>
-      <input type="text" id="immatriculation" name="immatriculation">
+      <label for="type">Type</label>
+      <input type="text" id="type" name="type" [(ngModel)]="type">
     </div>
     <div>
-      <label for="annee">Année : </label>
-      <input type="text" id="annee" name="annee">
+      <label for="matriculation">Matriculation</label>
+      <input type="text" id="matriculation" name="matriculation" [(ngModel)]="matricule">
     </div>
-    <div>
-      <label for="puissance_moteur">Puissance moteur : </label>
-      <input type="text" id="puissance_moteur" name="puissance_moteur">
-    </div>
-    <div>
-      <label for="type_moteur">Type de moteur : </label>
-      <input type="text" id="type_moteur" name="type_moteur">
-    </div>
-    <div>
-      <label for="transmission">Transmission : </label>
-      <input type="text" id="transmission" name="transmission">
-    </div>
-    <div>
-      <label for="couleur">Couleur : </label>
-      <input type="text" id="couleur" name="couleur">
-    </div>
-    <button mat-raised-button type="submit" (click)="$event.preventDefault()">Ajouter</button>
-  </form>
+
+    <button mat-raised-button type="submit" (click)="addCar()">Ajouter</button>
+  </div>
 </div>

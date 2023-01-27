@@ -5,19 +5,23 @@
     <div class="content">
 
       <!-- Liste des voitures que possèdent l'utilisateur -->
-      <div class="box_container car_list">
+      <div class="box_container car_list_container">
         <div class="title">
           <h2>My cars</h2>
-          <button mat-mini-fab id="add_icon" #button (click)="details.pageSelected = 'add'">
+          <button mat-mini-fab id="add_icon" matTooltip="add new car" #button (click)="details.pageSelected = 'add'">
             <mat-icon> add </mat-icon>
           </button>
+          <button (click)="showMessage()">
+            message
+          </button>
+
         </div>
         <ul class="car_list">
           <li class="car" [class.isActive]="car === car_details" *ngFor="let car of myCars"
             (click)="[viewDetails(car,details)]">
-            <div>
-              <p class="marque"> {{car.marque}} </p>
-              <p class="matricule"> {{car.im}} </p>
+            <div class="info_car">
+              <p class="marque"> {{car.model}} <span class="type"> {{car.type}} </span></p>
+              <p class="matricule"> {{car.matricule}} </p>
             </div>
             <div class="status">
               <p>Status</p>

@@ -28,11 +28,20 @@
   flex-direction: column;
   width: 50%;
   height: 100%;
+  overflow: hidden;
+}
+
+.car_list_container {
+  display: flex;
+  flex-direction: column;
+  height: 96%;
 }
 
 .detail,
 .car_list {
   height: 100%;
+  overflow-x: hidden;
+  background-color: transparent;
 }
 
 .box_container {
@@ -111,6 +120,15 @@
   color: rgba(0, 0, 0, 0.8);
   margin: 0px;
   padding: 0px;
+}
+
+
+.type {
+  font-family: 'Inter';
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  color: grey;
 }
 
 .detail {

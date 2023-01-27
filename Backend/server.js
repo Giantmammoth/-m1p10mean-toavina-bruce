@@ -1,6 +1,8 @@
-
+require('dotenv').config('config.env');
 const http = require('http');
 const app = require('./app');
+const io_ctrl = require('./controllers/socket.controller');
+
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -37,6 +39,17 @@ const errorHandler = error => {
 };
 
 const server = http.createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
+})
+
+io.on("connection", io_ctrl.Sockets);
+
 
 server.on('error', errorHandler);
 server.on('listening', () => {
@@ -45,6 +58,6 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
-
+exports.socket = io;
 
 server.listen(port);

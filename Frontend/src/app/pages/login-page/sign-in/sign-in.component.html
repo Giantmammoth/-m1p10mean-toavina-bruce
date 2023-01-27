@@ -6,11 +6,11 @@
 
     <div class="logo">Garage</div>
     <h2>Connectez-vous pour acceder a votre compte</h2>
-    <form action="">
-      <input type="email" name="address_email" id="address_email" placeholder="Adress émail">
-      <input type="password" name="password" id="password" placeholder="Mots de passe">
-      <button mat-raised-button id="inscription">Se connecter</button>
-    </form>
+    <div>
+      <input type="email" name="address_email" id="address_email" placeholder="Adress émail" [(ngModel)]="email">
+      <input type="password" name="password" id="password" placeholder="Mots de passe" [(ngModel)]="password">
+      <button mat-raised-button id="inscription" (click)="login()">Se connecter</button>
+    </div>
   </div>
-  <p>Vous n’avez pas de  compte ?<a routerLink="/signUp" class="go_to"> Inscrivez-vous </a></p>
+  <p>Vous n’avez pas de compte ?<a routerLink="/signUp" class="go_to"> Inscrivez-vous </a></p>
 </div>
