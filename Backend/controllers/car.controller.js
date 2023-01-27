@@ -106,7 +106,7 @@ exports.updateListReparation = async (req, res) => {
         req.body.materiel.forEach(element => {
             const item = {
                 materiel: element.materiel,
-                prix : element.prix
+                prix: element.prix
             }
             materielArray.push(item)
             prixMat.push(item.prix)
@@ -115,14 +115,7 @@ exports.updateListReparation = async (req, res) => {
         let intArray = price.map(str => parseInt(str));
         let finalprice = intArray.reduce((a, b) => a + b);
 
-<<<<<<< HEAD
         await Car.updateOne({ _id: req.params.id }, { $set: { listReparation: repareArray, totalPrix: finalprice } })
-=======
-        let matArray = prixMat.map(str => parseInt(str));
-        let prixMatFinal = matArray.reduce((a, b) => a + b);
-
-        await Car.updateOne({_id: req.params.id}, {$set: {listReparation: repareArray, materiel: materielArray, prixMateriel: prixMatFinal, totalPrix: finalprice }})
->>>>>>> 3fdae6a33f9b1866b5dec782bc0d5547e6e6fe04
         return res.status(200).send({ message: 'Liste réparation envoyé' });
 
     }

@@ -44,16 +44,13 @@ app.use("/api/v1/Facture", Facture)
 const Garage = require('./routes/garage.route')
 app.use("/api/v1/Garage", Garage)
 
-<<<<<<< HEAD
-module.exports = app;
-=======
+
 cron.schedule('0 0 * * *', () => {
-    garCrtl.statGarage()
+  garCrtl.statGarage()
 });
 
 const Employer = require('./routes/employer.route')
-app.use ("/api/v1/Employer", Employer)
+app.use("/api/v1/Employer", Employer)
 
-module.exports = app; 
->>>>>>> 3fdae6a33f9b1866b5dec782bc0d5547e6e6fe04
+module.exports = app;
 
