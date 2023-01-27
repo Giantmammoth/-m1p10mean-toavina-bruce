@@ -7,6 +7,8 @@ const factureschema = mongoose.Schema({
     type: { type: String, required: true },
     matricule: { type: String, required: true },
     listReparation: [Object],
+    materiel: [Object],
+    prixMateriel: { type: String, required: true, default: "0"},
     totalPrix: { type: String, required: true, default: "0"},
     recuPayement : { type: Boolean, default: false },
     confirmePayement : { type: Boolean, default: false },

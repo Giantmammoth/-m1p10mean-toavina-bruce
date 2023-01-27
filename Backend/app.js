@@ -4,6 +4,9 @@ require("dotenv").config({ path: "./config.env" });
 const path = require('path');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
+const cron = require('node-cron');
+const garCrtl = require('./controllers/garage.controller');
+
 const app = express();
 
 mongoose.set("strictQuery", false);
@@ -36,6 +39,13 @@ app.use ("/api/v1/Facture", Facture)
 
 const Garage = require('./routes/garage.route')
 app.use ("/api/v1/Garage", Garage)
+
+cron.schedule('0 0 * * *', () => {
+    garCrtl.statGarage()
+});
+
+const Employer = require('./routes/employer.route')
+app.use ("/api/v1/Employer", Employer)
 
 module.exports = app; 
 
