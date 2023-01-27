@@ -2,7 +2,8 @@ const Car = require('../models/car.model')
 const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model')
 const Garage = require('../models/garage.model')
-
+const Employer = require("../models/employer.model");
+const cron = require('node-cron');
 
 function sommeArr(arr) {
     let convertstr = arr.map(str => parseInt(str));
@@ -11,7 +12,8 @@ function sommeArr(arr) {
 }
 
 exports.statGarage = async (req, res) => {
-    try {
+    
+
         const car = await Car.find({})
 
         // temps de reparation moyen
@@ -29,7 +31,7 @@ exports.statGarage = async (req, res) => {
         const today = new Date(timeElapsed);
         let chiffreAffairedArray = []
         let chiffreAffaired = "0"
-        const operationDay = await Facture.find({ statue: true, dateDebut: today.toLocaleDateString() })
+        const operationDay = await Facture.find({ confirmePayement: true, dateDebut: today.toLocaleDateString() })
         if (operationDay.length === 0) {
             console.log("no operation today")
         } else {
@@ -46,7 +48,11 @@ exports.statGarage = async (req, res) => {
         const mois = today.toLocaleDateString().slice(3, 10)
         let chiffreAffairemArray = []
         let chiffreAffairem = "0"
+<<<<<<< HEAD
         const operationMonth = await Facture.find({ statue: true, dateDebut: new RegExp(mois) })
+=======
+        const operationMonth = await Facture.find({ confirmePayement: true, dateDebut: new RegExp(mois) })
+>>>>>>> 3fdae6a33f9b1866b5dec782bc0d5547e6e6fe04
         if (operationMonth.length === 0) {
             console.log("no operation this month")
         } else {
@@ -59,33 +65,57 @@ exports.statGarage = async (req, res) => {
 
 
         // depense 
-
         let totalDepense = []
-        for (let key in req.body) {
-            totalDepense.push(req.body[key]);
-        }
-        console.log(sommeArr(totalDepense))
+        let totalMateriel = []
+        let totalSalaire = []
+
+        operationMonth.forEach(element => totalMateriel.push(element.prixMateriel))
+
+        const salaire = await Employer.find({})
+        salaire.forEach(element => totalSalaire.push(element.salaire))
+
+
+        
+        const sommeSalaire = sommeArr(totalSalaire)
+        const sommeMateriel = sommeArr(totalMateriel)
+        const loyer = 500000
+
+        totalDepense.push(sommeSalaire, sommeMateriel, loyer)
+
+        const sommeDepense = sommeArr(totalDepense)
 
         // Benefice 
-        const benefice = sommeArr(chiffreAffairemArray) - sommeArr(totalDepense)
-        console.log(benefice)
+        let benefice = chiffreAffairem - sommeSalaire - sommeMateriel - loyer
 
-        const garage = new Garage({
-            tempsReparation: tempsReparationM,
-            chiffreAffaireJour: chiffreAffaired,
-            chiffreAffaireMois: chiffreAffairem,
-            depense: req.body,
-            benefice: benefice
-        })
-        console.log(garage)
+        await Garage.updateOne({ _id: "63cb086d49844a0b7ef5667e" },
+            {
+                $push: {
+                    tempsReparation: tempsReparationM,
+                    chiffreAffaireJour: chiffreAffaired,
+                    chiffreAffaireMois: chiffreAffairem,
+                    depense: sommeDepense,
+                    benefice: benefice
+                },
+                $set: {
+                    salaire: sommeSalaire,
+                    materiel: sommeMateriel,
+                    loyer: loyer
+                }
+            });
+}
 
-        await garage.save()
-        return res.status(200).send({ message: "Nouveau statistique !" })
+
+exports.getStat = async (req, res) => {
+    try {
+        const garage = await Garage.findById("63cb086d49844a0b7ef5667e")
+
+        return res.status(200).send({data: garage})
 
     }
     catch (error) {
         console.log(error)
         res.status(500).send({ message: "Internal Server Error" });
+<<<<<<< HEAD
     }
 }
 
@@ -101,3 +131,8 @@ exports.getCarListInGarage = async (req, res) => {
         res.status(500).send({ message: "Internal Server Error" });
     }
 }
+=======
+    } 
+}
+
+>>>>>>> 3fdae6a33f9b1866b5dec782bc0d5547e6e6fe04

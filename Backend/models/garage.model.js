@@ -2,11 +2,15 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const garageschema = mongoose.Schema({
-    tempsReparation: { type: String, required: true, default: "0" },
-    chiffreAffaireJour: { type: String, required: true, default: "0" },
-    chiffreAffaireMois: { type: String, required: true, default: "0" },
+    tempsReparation: [Object],
+    chiffreAffaireJour: [Object],
+    chiffreAffaireMois: [Object],
     depense: [Object],
-    benefice: { type: String, required: true, default: "0" },
+    benefice: [Object],
+    salaire: { type: String, required: true },
+    materiel: { type: String, required: true },
+    loyer: { type: String, required: true },
+
 });
 
 module.exports = mongoose.model('Garage', garageschema);

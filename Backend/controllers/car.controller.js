@@ -89,6 +89,8 @@ exports.updateListReparation = async (req, res) => {
             return res.status(404).send({ message: "Car not found" })
 
         let repareArray = []
+        let materielArray = []
+        let prixMat = []
         let price = []
         let delaiArray = []
         req.body.listReparation.forEach(element => {
@@ -98,13 +100,29 @@ exports.updateListReparation = async (req, res) => {
                 delai: element.delai
             }
             repareArray.push(item);
-            price.push(element.prix)
-            delaiArray.push(element.delai)
+            price.push(item.prix)
+            delaiArray.push(item.delai)
         });
+        req.body.materiel.forEach(element => {
+            const item = {
+                materiel: element.materiel,
+                prix : element.prix
+            }
+            materielArray.push(item)
+            prixMat.push(item.prix)
+        })
+
         let intArray = price.map(str => parseInt(str));
         let finalprice = intArray.reduce((a, b) => a + b);
 
+<<<<<<< HEAD
         await Car.updateOne({ _id: req.params.id }, { $set: { listReparation: repareArray, totalPrix: finalprice } })
+=======
+        let matArray = prixMat.map(str => parseInt(str));
+        let prixMatFinal = matArray.reduce((a, b) => a + b);
+
+        await Car.updateOne({_id: req.params.id}, {$set: {listReparation: repareArray, materiel: materielArray, prixMateriel: prixMatFinal, totalPrix: finalprice }})
+>>>>>>> 3fdae6a33f9b1866b5dec782bc0d5547e6e6fe04
         return res.status(200).send({ message: 'Liste réparation envoyé' });
 
     }
