@@ -7,7 +7,6 @@ const Auth = require('../middleware/Auth')
 
 router.get('/', Auth, carCtrl.getCarList);
 router.post('/', Auth, carCtrl.addNewCar);
-router.put('/progress/', [Auth], carCtrl.progressPercentage);
 router.put('/listReparation/:id', [validateObjectId, Auth], carCtrl.updateListReparation);
 
 
