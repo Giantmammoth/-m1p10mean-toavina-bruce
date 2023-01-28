@@ -17,14 +17,13 @@ export class AddNewCarComponent {
 
   addCar() {
     const data = {
+      token: localStorage.getItem("x-auth-token"),
       model: this.model,
       type: this.type,
       matricule: this.matricule,
     }
 
-    this.customerService.addNewCar(data).subscribe((res: any) => {
-      console.log(res)
-    })
+    this.customerService.addNewCar(data)
   }
 
 }

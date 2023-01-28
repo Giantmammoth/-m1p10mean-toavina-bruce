@@ -26,14 +26,22 @@
 
           </div>
           <div class="button_container">
-            <button class="button_icon_car" mat-raised-button matTooltip="Voir les réparations"
-              (click)="pageSelected = 'reparation_list'">
-              <img class="tow_car_icon" src="../../../../../assets/icons/detail.png" alt="tow car">
-            </button>
-            <button class="button_icon_car" mat-raised-button matTooltip="Envoyer en réparation"
-              (click)="sendToGarage(detail.matricule)">
-              <img class="tow_car_icon" src="../../../../../assets/icons/tow-truck.png" alt="tow car">
-            </button>
+
+            <div *ngIf="status(); then detailBlock; else sendBlock"></div>
+            <ng-template #detailBlock>
+              <button class="button_icon_car" mat-raised-button matTooltip="Voir les réparations"
+                (click)="[pageSelected = 'reparation_list']">
+                <img class="tow_car_icon" src="../../../../../assets/icons/detail.png" alt="tow car">
+              </button>
+            </ng-template>
+
+            <ng-template #sendBlock>
+              <button class="button_icon_car" mat-raised-button matTooltip="Envoyer en réparation"
+                (click)="sendToGarage(detail)">
+                <img class="tow_car_icon" src="../../../../../assets/icons/tow-truck.png" alt="tow car">
+              </button>
+            </ng-template>
+
           </div>
         </div>
       </div>
@@ -44,36 +52,56 @@
           <div class="title">
             Liste des réparations
           </div>
-          <div class="lists">
-            <ul>
-              <li>
-                <p class="reparation">
-                  Changement filtre a essence
-                </p>
-                <p class="status">
-                  Prêt
-                </p>
-              </li>
-              <li>
-                <p class="reparation">
-                  Entretien pneus
-                </p>
-                <p class="status">
-                  En cours
-                </p>
-              </li>
-            </ul>
+          <div class="service_list">
+            <div *ngFor="let service of services">
+              <div *ngIf="service.tasks.length !== 0">
+                <div class="title_service">
+                  {{ service.title }}
+                </div>
+
+                <div class="lists">
+                  <ul>
+                    <li *ngFor="let task of service.tasks" (click)="toggleStatus(task)">
+                      <p class="reparation">
+                        {{ task.name }}
+                      </p>
+                      <p class="status">
+                        <input type="checkbox" name="" id="" [(ngModel)]="task.done">
+
+                      </p>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
           </div>
+
+
+
         </div>
 
         <div class="loading">
-          <p>Avancement</p>
-          <div class="progress_bar_container">
-            <p> {{progress}} </p>
-            <div class="progressBar">
-              <div class="progress" [ngStyle]="progressBar()"></div>
+
+          <div *ngIf="detail.status == 'En attente de payement'; then confirmBlock; else stateBlock"></div>
+
+          <ng-template #confirmBlock>
+            <button mat-raised-button class="confirm_button" (click)="sendConfirmList()" [disabled]="sendButtonClicked">
+              confirmer
+            </button>
+          </ng-template>
+
+          <ng-template #stateBlock>
+            <p>Avancement</p>
+            <div class="progress_bar_container">
+              <p> {{progress}} </p>
+              <div class="progressBar">
+                <div class="progress" [ngStyle]="progressBar()"></div>
+              </div>
             </div>
-          </div>
+          </ng-template>
+
+
         </div>
 
       </div>

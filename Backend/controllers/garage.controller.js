@@ -11,6 +11,7 @@ function sommeArr(arr) {
     return somme
 }
 
+
 exports.statGarage = async (req, res) => {
 
 
@@ -119,7 +120,10 @@ exports.getCarListInGarage = async (req, res) => {
     try {
         await Car.find({
             sendToGarage: true
-        }).then(cars => cars);
+        }).then(cars => {
+            console.log(cars)
+            res.send(cars);
+        });
 
     } catch (error) {
         console.log(error)

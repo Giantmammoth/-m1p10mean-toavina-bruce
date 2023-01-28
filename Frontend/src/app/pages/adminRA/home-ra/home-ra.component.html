@@ -24,14 +24,14 @@
 
             <div class="sidenav-content">
               <h2>Listes des voitures</h2>
-              <div class="list-item" *ngFor="let car of cars" [class.isSelected]="car === selectedCar"
-                (click)="[changeSelectedCar(car)]" cdkDrag>
+              <div class="list-item" *ngFor="let car of cars" [class.isSelected]="car === selectedCar && firstclick"
+                (click)="[changeSelectedCar(car)]" [cdkDragDisabled]="confirm(car)" cdkDrag>
                 <div>
                   <p class="marque"> {{car.model}} </p>
                   <p class="matricule"> {{car.matricule}} </p>
                 </div>
                 <div class="status">
-                  <p>Status</p>
+                  <p>{{car.status}}</p>
                 </div>
               </div>
             </div>
@@ -49,8 +49,7 @@
             <mat-drawer-container class="container-side" autosize>
 
               <mat-drawer #controllerPage [(opened)]="openControllerPage" class="sidenav box_container" mode="push">
-                <app-services [selectedService]="selectedCar.reparation"
-                  [openControllerPage]="controllerPage"></app-services>
+                <app-services [selectedService]="selectedCar" [openControllerPage]="controllerPage"></app-services>
               </mat-drawer>
 
               <div class="sidenav-content">

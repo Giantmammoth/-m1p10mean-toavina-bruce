@@ -11,6 +11,7 @@ export class ServicesComponent {
   constructor(private services: RaService) { }
 
   @Input() openControllerPage?: any;
+
   closeControllerPage(): void {
     this.openControllerPage.opened = false;
   }
@@ -70,7 +71,6 @@ export class ServicesComponent {
 
 
   ngOnInit(): void {
-    this.selectedService = new GarageServicesModel().getServicesModel();
     this.services.getServicesOfGarage().subscribe(services => this.data = services)
   }
 
@@ -84,20 +84,21 @@ export class ServicesComponent {
   }
 
   addToSelectedService(e: any): void {
+    console.log(this.selectedService)
     switch (this.pageSelected) {
       /* Service page */
       case "service": {
         switch (this.servicePageSelected) {
           case "revision": {
-            this.selectedService!.service.revision.tasks = this.addListOfCarService(this.selectedService!.service.revision.tasks, e);
+            this.selectedService!.listReparation.service.revision.tasks = this.addListOfCarService(this.selectedService!.listReparation.service.revision.tasks, e);
             break;
           }
           case "entretien": {
-            this.selectedService!.service.entretien.tasks = this.addListOfCarService(this.selectedService!.service.entretien.tasks, e);
+            this.selectedService!.listReparation.service.entretien.tasks = this.addListOfCarService(this.selectedService!.listReparation.service.entretien.tasks, e);
             break;
           }
           case "reparation": {
-            this.selectedService!.service.reparation.tasks = this.addListOfCarService(this.selectedService!.service.reparation.tasks, e);
+            this.selectedService!.listReparation.service.reparation.tasks = this.addListOfCarService(this.selectedService!.listReparation.service.reparation.tasks, e);
             break;
           }
         }
@@ -105,7 +106,7 @@ export class ServicesComponent {
       }
       /* Piece page */
       case "piece": {
-        this.selectedService!.piece.tasks = this.addListOfCarService(this.selectedService!.piece.tasks, e);
+        this.selectedService!.listReparation.piece.tasks = this.addListOfCarService(this.selectedService!.listReparation.piece.tasks, e);
         break;
       }
       /* Groupe page */
@@ -122,8 +123,9 @@ export class ServicesComponent {
     return tab.includes(name);
   }
 
-  showSelected() {
-    console.log(this.selectedService!);
+  sendServices() {
+    this.selectedService.status = "En attente de payement";
+    this.services.sendReparationList(this.selectedService);
   }
 
 }

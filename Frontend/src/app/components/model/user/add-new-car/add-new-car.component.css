@@ -1,6 +1,14 @@
 .add_container {
   height: 100%;
   width: 100%;
+  padding: 20px;
+}
+
+.add_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 form {
@@ -34,4 +42,36 @@ input {
 
 button {
   margin: 20px 0px;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(3, 3, 21, 0.1);
+}
+
+legend {
+  font-family: 'Inter';
+  font-size: 15px;
+  font-weight: 700;
+  margin: 5px;
+}
+
+input {
+  font-family: 'Inter';
+  font-size: 16px;
+  font-weight: 500;
+  height: 20px;
+  margin: 5px 10px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  background-color: rgba(3, 3, 21, 0.8) !important;
+  color: white !important;
 }

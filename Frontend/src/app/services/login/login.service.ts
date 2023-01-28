@@ -16,7 +16,7 @@ export class LoginService {
       shareReplay(),
       tap((res: HttpResponse<any>) => {
         this.setSession(res.body.data);
-        console.log("Login SUCCESS");
+        console.log("Login SUCCESS", res.body.data);
       })
     )
   }

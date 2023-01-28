@@ -10,18 +10,35 @@ import { RaService } from 'src/app/services/raService/ra.service';
 })
 export class HomeRAComponent {
   cars: any = [];
+  selectedCar: any;
+  firstclick = false;
 
-  constructor(private garageService: RaService) {
-
-  }
+  constructor(private garageService: RaService) { }
 
   ngOnInit(): void {
-    /* this.garageService.getCars().subscribe(cars => this.cars = cars); */
-    this.garageService.newData().subscribe(data => {
-      this.cars = this.cars.concat(data);
+    this.garageService.getCars().subscribe((cars: any) => {
+      console.log("Garage Data")
+      this.cars = cars;
+      this.reloadData();
+    })
+    this.garageService.newData().subscribe((data: any) => {
+
+      let isIn = this.cars.some((car: any) => car._id == data._id);
+      if (!isIn) {
+        this.cars = this.cars.concat(data);
+        this.reloadData();
+      }
+
+
     })
   }
 
+  reloadData() {
+    this.cars = this.cars.map((car: any) => {
+      return { ...car, listReparation: new GarageServicesModel().getServicesModel() }
+    });
+    this.selectedCar = this.cars[0]
+  }
 
   enCours: any = []
 
@@ -39,10 +56,10 @@ export class HomeRAComponent {
   /* ---------- On select car ----------- */
 
   openControllerPage: boolean = false;
-  selectedCar: Car = this.cars[0] || new GarageServicesModel().getServicesModel();
-  changeSelectedCar(car: Car): void {
-    if (this.selectedCar !== car) this.selectedCar = car;
+  changeSelectedCar(car: any): void {
+    if (!this.firstclick) this.firstclick = true
     this.openControllerPage = true;
+    if (this.selectedCar !== car) this.selectedCar = car;
   }
 
   openDetailsPage: boolean = false;
@@ -52,4 +69,11 @@ export class HomeRAComponent {
     this.openDetailsPage = true;
   }
 
+  confirm(car: any) {
+    if (car.status != "payé") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

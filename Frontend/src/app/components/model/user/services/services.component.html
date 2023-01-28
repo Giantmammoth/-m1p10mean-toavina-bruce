@@ -1,4 +1,4 @@
-<div class="control_container">
+<div class="control_container" *ngIf="selectedService">
   <nav>
     <ul>
       <li>
@@ -41,8 +41,9 @@
               <h3> {{ entretien.title }} </h3>
               <ul>
                 <li *ngFor="let task of entretien.tasks">
-                  <mat-checkbox class="checkBox" [checked]="isChecked(task,selectedService!.service.entretien.tasks)"
-                    [name]="task" [color]="'primary'" (click)="addToSelectedService($event.target)">
+                  <mat-checkbox class="checkBox"
+                    [checked]="isChecked(task,selectedService!.listReparation.service.entretien.tasks)" [name]="task"
+                    [color]="'primary'" (click)="addToSelectedService($event.target)">
                     {{task}}
                   </mat-checkbox>
                 </li>
@@ -54,8 +55,8 @@
             <ul>
               <li *ngFor="let task of data.services[servicePageSelected]">
                 <mat-checkbox class="checkBox"
-                  [checked]="isChecked(task,selectedService!.service[servicePageSelected].tasks)" [name]="task"
-                  [color]="'primary'" (click)="addToSelectedService($event.target)">
+                  [checked]="isChecked(task,selectedService!.listReparation.service[servicePageSelected].tasks)"
+                  [name]="task" [color]="'primary'" (click)="addToSelectedService($event.target)">
                   {{task}}
                 </mat-checkbox>
               </li>
@@ -69,8 +70,8 @@
       <div *ngSwitchCase="'piece'">
         <ul class="piece_container">
           <li *ngFor="let piece of data.piece">
-            <mat-checkbox class="checkBox lol" [checked]="isChecked(piece,selectedService!.piece.tasks)" [name]="piece"
-              [color]="'primary'" (click)="addToSelectedService($event.target)">
+            <mat-checkbox class="checkBox lol" [checked]="isChecked(piece,selectedService!.listReparation.piece.tasks)"
+              [name]="piece" [color]="'primary'" (click)="addToSelectedService($event.target)">
               {{piece}}
             </mat-checkbox>
           </li>
@@ -84,7 +85,7 @@
     </div>
 
     <div class="button_container">
-      <button mat-raised-button class="send_button" (click)="showSelected()">Ajouter</button>
+      <button mat-raised-button class="send_button" (click)="sendServices()">Ajouter</button>
     </div>
   </div>
 

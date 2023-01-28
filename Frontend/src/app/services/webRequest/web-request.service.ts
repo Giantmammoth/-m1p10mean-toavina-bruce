@@ -1,18 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Socket } from 'ngx-socket-io';
-
+import * as io from 'socket.io-client';
 @Injectable({
   providedIn: 'root'
 })
 export class WebRequestService {
 
   readonly ROOT_URL;
+  socket = io.connect("http://localhost:5000");
 
 
   constructor(private http: HttpClient) {
     this.ROOT_URL = "http://localhost:5000/api/v1";
 
+  }
+
+  Emit(keyword: string, data: any) {
+    this.socket.emit(keyword, data);
+  }
+
+  On(keyword: string, data: any) {
+    this.socket.on(keyword, data);
+  }
+
+  Disconnect() {
+    return this.socket.disconnect();
   }
 
   get(uri: string) {
@@ -39,4 +51,7 @@ export class WebRequestService {
       observe: "response"
     })
   }
+
+
+
 }

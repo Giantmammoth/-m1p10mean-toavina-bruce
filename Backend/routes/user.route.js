@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userCtrl = require('../controllers/user.controller');
+const { User } = require('../models/user.model');
 
 
 router.post('/signup', userCtrl.signup);
@@ -10,5 +11,6 @@ router.put('/verify/:id', userCtrl.verifyAuth);
 
 router.delete("/signup", userCtrl.delete)
 router.get("/", userCtrl.getUser)
+
 
 module.exports = router;

@@ -58,20 +58,30 @@ exports.addNewCar = async (req, res) => {
 
 exports.depotCar = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id)
-        if (!user)
-            return res.status(409).send({ message: "User do not Exist!" });
 
+        console.log("IN PATCH MIDLEWARE ...");
         const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
+        const today = new Date(timeElapsed).toLocaleDateString();
 
         const car = new Car({
             ...req.body,
-            user: user._id,
-            dateDepot: today.toLocaleDateString(),
+            status: "En attente",
+            sendToGarage: true,
+            user: req.user,
+            dateDepot: today,
         })
-        await car.save();
-        return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
+
+        req.body = car;
+        await Car.findOneAndUpdate({
+            _id: req.body._id,
+        }, {
+            $set: req.body
+        }).then((data) => {
+
+            res.status(200).send({ message: "Les données : ", data })
+        })
+
+
 
     }
     catch (error) {

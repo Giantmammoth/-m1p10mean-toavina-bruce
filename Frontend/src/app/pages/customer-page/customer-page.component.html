@@ -11,10 +11,6 @@
           <button mat-mini-fab id="add_icon" matTooltip="add new car" #button (click)="details.pageSelected = 'add'">
             <mat-icon> add </mat-icon>
           </button>
-          <button (click)="showMessage()">
-            message
-          </button>
-
         </div>
         <ul class="car_list">
           <li class="car" [class.isActive]="car === car_details" *ngFor="let car of myCars"
@@ -24,11 +20,25 @@
               <p class="matricule"> {{car.matricule}} </p>
             </div>
             <div class="status">
-              <p>Status</p>
-              <button class="button_icon_car" (click)="$event.stopPropagation()" mat-fab
-                matTooltip="Envoyer en réparation" [matTooltipPosition]="'before'">
-                <img class="tow_car_icon" src="../../../assets/icons/tow-truck.png" alt="tow car">
-              </button>
+              <p>{{ car.status}}</p>
+
+              <div *ngIf="status(car); then detailBlock; else sendBlock"></div>
+              <ng-template #detailBlock>
+                <button class="button_icon_car" (click)="$event.stopPropagation()" mat-fab
+                  matTooltip="Voir les réparations" [matTooltipPosition]="'before'">
+                  <img class="tow_car_icon" src="../../../assets/icons/detail.png" alt="detail"
+                    (click)="[car_details = car,details.show(car_details)]">
+                </button>
+              </ng-template>
+
+              <ng-template #sendBlock>
+                <button class="button_icon_car" (click)="$event.stopPropagation()" mat-fab
+                  matTooltip="Envoyer en réparation" [matTooltipPosition]="'before'">
+                  <img class="tow_car_icon" src="../../../assets/icons/tow-truck.png" alt="tow car"
+                    (click)="[sendToGarage(car), car.status = 'En attente']">
+                </button>
+              </ng-template>
+
             </div>
           </li>
         </ul>

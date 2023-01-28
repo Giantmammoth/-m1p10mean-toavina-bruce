@@ -16,7 +16,7 @@ export class SignInComponent {
 
   login() {
     this.authentification.login(this.email, this.password).subscribe((res: HttpResponse<any>) => {
-      this.router.navigate(['/customer']);
+      this.router.navigate([`/${res.body.identification}`]);
     })
   }
 }

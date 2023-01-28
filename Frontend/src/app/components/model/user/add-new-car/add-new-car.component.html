@@ -1,18 +1,18 @@
 <div class="add_container">
-  <div>
-    <div>
-      <label for="marque">Model</label>
+  <div class="add_content">
+    <fieldset>
+      <legend>Model</legend>
       <input type="text" id="marque" name="marque" [(ngModel)]="model">
-    </div>
-    <div>
-      <label for="type">Type</label>
+    </fieldset>
+    <fieldset>
+      <legend>Type</legend>
       <input type="text" id="type" name="type" [(ngModel)]="type">
-    </div>
-    <div>
-      <label for="matriculation">Matriculation</label>
+    </fieldset>
+    <fieldset>
+      <legend>Matricule</legend>
       <input type="text" id="matriculation" name="matriculation" [(ngModel)]="matricule">
-    </div>
+    </fieldset>
 
-    <button mat-raised-button type="submit" (click)="addCar()">Ajouter</button>
+    <button mat-raised-button (click)="addCar()">Ajouter</button>
   </div>
 </div>

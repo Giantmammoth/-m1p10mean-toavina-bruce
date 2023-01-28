@@ -14,11 +14,11 @@ export class CarDetailsComponent {
 
   constructor(private customerService: CustomerService) { }
 
-  sendToGarage(matricule: string) {
+  sendToGarage(detail: any) {
     const token = localStorage.getItem('x-auth-token');
-    console.log(matricule);
-    this.customerService.sendToGarage({ token, matricule });
+    this.customerService.sendToGarage({ data: detail, token });
   }
+
 
   navigation: any[] = [
     {
@@ -51,6 +51,48 @@ export class CarDetailsComponent {
     return style;
   }
 
+  status(): boolean {
+    if (this.detail.status == "En attente de payement") {
+      return true;
+    }
+    return false;
+  }
+
+
+  services: any;
+  pieces: any;
+
+  show(car_detail: any) {
+    this.detail = car_detail;
+    this.pageSelected = 'reparation_list'
+    this.services = Object
+      .keys(this.detail.listReparation.service)
+      .filter((value: string) => value !== "title")
+      .map((key: string): any => {
+
+        return {
+          title: this.detail.listReparation.service[key].title,
+          tasks: this.detail.listReparation.service[key].tasks.map((value: any) => { return { name: value, done: false } })
+        }
+      });
+
+    this.pieces = {
+      title: this.detail.listReparation.piece.title,
+      tasks: this.detail.listReparation.piece.tasks.map((value: any) => { return { name: value, done: false } })
+    };
+  }
+
+
+  toggleStatus(status: any): void {
+    status.done = !status.done
+    console.log(status)
+  }
+
+  sendButtonClicked: boolean = false;
+  sendConfirmList() {
+    this.sendButtonClicked = true;
+    console.log(this.detail.listReparation);
+  }
 
 }
 
