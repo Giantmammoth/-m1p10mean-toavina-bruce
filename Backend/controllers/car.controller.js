@@ -4,6 +4,7 @@ const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model');
 const sendMail = require('../middleware/sendmail');
 const socket = require('../server');
+const cron = require('node-cron');
 
 
 function sommeArr(arr) {
@@ -108,68 +109,25 @@ function convertDateToMilliseconds(dateString) {
 }
 
 exports.progressPercentage = async (req, res) => {
-    
-        const car = await Car.find({ status: "En cours de réparation" })
-        if (!car)
-            return res.status(404).send({ message: "Car not found" })
 
-        car.forEach( (car) => {
-            let i = parseFloat(car.avancement);
-            const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDebut)
-            const duration = Date.now() - convertDateToMilliseconds(car.dateDebut);
+    const car = await Car.find({ status: "En cours de réparation" })
+    if (!car)
+        return res.status(404).send({ message: "Car not found" })
 
-            
-            
-            const interval = setInterval(async () => {
-                    console.log(`Loading ${i}%`);
-        
-                    // Save the loading progress to MongoDB
-                    await Car.updateOne({ _id: car._id }, { $set: { avancement: i } })
-        
-                    if (duration >= delayms || i >= 100) {
-                        console.log("Complete!");
-        
-                        // Clear the interval
-                        clearInterval(interval);
-                    } else {
-                        setTimeout(() => {
-                            i += (100 / delayms) * (86400000); // Increase by the calculated percentage per day
-                            i = Math.min(i, 100);
-                        }, 86400000); // 86400000ms = 24 hours
-                    }
-                }, 86400000)
-            })
-        
-        // // const timeElapsed = Date.now();
-        // // const today = new Date(timeElapsed);
-        // console.log(car.avancement)
-        // let i = parseFloat(car.avancement);
-        // console.log(i)
-        // // const delay = calculateDelay(car.dateDepot, car.dateSortie)
-        // const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDepot)
-        // console.log(delayms)
-        // const duration = Date.now() - convertDateToMilliseconds(car.dateDepot);
-        // console.log(duration)
+    car.forEach(async (car) => {
+        let i = parseFloat(car.avancement);
+        const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDebut)
+        const duration = Date.now() - convertDateToMilliseconds(car.dateDebut);
 
-        // const interval = setInterval(async () => {
-        //     console.log(`Loading ${i}%`);
-
-        //     // Save the loading progress to MongoDB
-        //     await Car.updateOne({ _id: req.params.id }, { $set: { avancement: i } })
-
-        //     if (duration >= delayms || i >= 100) {
-        //         console.log("Complete!");
-
-        //         // Clear the interval
-        //         clearInterval(interval);
-        //     } else {
-        //         setTimeout(() => {
-        //             i += (100 / delayms) * (6000); // Increase by the calculated percentage per day
-        //             i = Math.min(i, 100);
-        //         }, 6000); // 86400000ms = 24 hours
-        //     }
-
-
-        // }, 6000); // 86400000ms = 24 hours
-    
+        if (duration >= delayms || i == 100) {
+            i = 100;
+            console.log(`Réparation ${car.model} ${car.matricule} terminer `)
+            await Car.updateOne({ _id: car._id }, { $set: { avancement: i, status: "Réparation términé" } });
+        } else {
+            i += (100 / delayms) * (86400000); // Augmenter de pourcentage calculé par jour
+            i = Math.min(i, 100);
+            console.log (`Loading ${i}%`)
+            await Car.updateOne({ _id: car._id }, { $set: { avancement: i } });
+        }
+    })
 }

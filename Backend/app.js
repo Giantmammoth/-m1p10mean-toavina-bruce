@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 const User = require('./routes/user.route')
 app.use("/api/v1/User", User)
 
-cron.schedule('* * * * * *', () => {
+cron.schedule('0 0 * * *', () => {
   carCrtl.progressPercentage()
 });
 
