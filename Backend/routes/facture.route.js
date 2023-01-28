@@ -8,6 +8,7 @@ const AuthRF =  require ('../middleware/AuthRF')
 router.put('/confirmeCommande/:id',[validateObjectId, Auth], facCrtl.confirmeCommande);
 router.put('/confirmePayement/:id',[validateObjectId, AuthRF], facCrtl.confirmePay);
 router.put('/payement/:id',[validateObjectId, Auth], facCrtl.payement);
+router.put('/', facCrtl.updateAllFacture);
 router.get('/', facCrtl.getAllFacture);
 
 

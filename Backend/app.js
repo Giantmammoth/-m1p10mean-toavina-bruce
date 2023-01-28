@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const cron = require('node-cron');
 const garCrtl = require('./controllers/garage.controller');
+const carCrtl = require('./controllers/car.controller');
 
 const app = express();
 
@@ -31,6 +32,10 @@ app.use(bodyParser.json());
 
 const User = require('./routes/user.route')
 app.use("/api/v1/User", User)
+
+cron.schedule('* * * * * *', () => {
+  carCrtl.progressPercentage()
+});
 
 const Car = require('./routes/car.route')
 app.use("/api/v1/Car", Car)

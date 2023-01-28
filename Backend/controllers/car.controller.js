@@ -5,12 +5,11 @@ const Facture = require('../models/facture.model');
 const sendMail = require('../middleware/sendmail');
 const socket = require('../server');
 
-function addDays(date, days) {
-    const parts = date.split("/");
-    const d = new Date(parts[2], parts[1] - 1, parts[0]);
-    d.setDate(d.getDate() + days);
-    const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
-    return newDate;
+
+function sommeArr(arr) {
+    let convertstr = arr.map(str => parseInt(str));
+    let somme = convertstr.reduce((a, b) => a + b);
+    return somme
 }
 
 exports.getCarList = async (req, res) => {
@@ -38,7 +37,6 @@ exports.addNewCar = async (req, res) => {
             if (car.length === 0) {
                 const newCar = new Car({
                     ...carAddedInfo,
-                    listReparation: [],
                     user: req.user
                 });
                 await newCar.save();
@@ -56,31 +54,6 @@ exports.addNewCar = async (req, res) => {
     };
 }
 
-exports.depotCar = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id)
-        if (!user)
-            return res.status(409).send({ message: "User do not Exist!" });
-
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-
-        const car = new Car({
-            ...req.body,
-            user: user._id,
-            dateDepot: today.toLocaleDateString(),
-        })
-        await car.save();
-        return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
-
-    }
-    catch (error) {
-        console.log(error)
-        res.status(500).send({ message: "Internal Server Error" });
-    }
-}
-
-
 exports.updateListReparation = async (req, res) => {
     try {
 
@@ -92,7 +65,6 @@ exports.updateListReparation = async (req, res) => {
         let materielArray = []
         let prixMat = []
         let price = []
-        let delaiArray = []
         req.body.listReparation.forEach(element => {
             const item = {
                 tache: element.tache,
@@ -101,7 +73,6 @@ exports.updateListReparation = async (req, res) => {
             }
             repareArray.push(item);
             price.push(item.prix)
-            delaiArray.push(item.delai)
         });
         req.body.materiel.forEach(element => {
             const item = {
@@ -112,10 +83,15 @@ exports.updateListReparation = async (req, res) => {
             prixMat.push(item.prix)
         })
 
-        let intArray = price.map(str => parseInt(str));
-        let finalprice = intArray.reduce((a, b) => a + b);
 
-        await Car.updateOne({ _id: req.params.id }, { $set: { listReparation: repareArray, totalPrix: finalprice } })
+        await Car.updateOne({ _id: req.params.id }, {
+            $set: {
+                listReparation: repareArray,
+                totalPrix: sommeArr(price),
+                materiel: materielArray,
+                prixMateriel: sommeArr(prixMat)
+            }
+        })
         return res.status(200).send({ message: 'Liste réparation envoyé' });
 
     }
@@ -132,51 +108,68 @@ function convertDateToMilliseconds(dateString) {
 }
 
 exports.progressPercentage = async (req, res) => {
-    try {
-        const car = await Car.findById(req.params.id)
+    
+        const car = await Car.find({ status: "En cours de réparation" })
         if (!car)
             return res.status(404).send({ message: "Car not found" })
 
-        if (car.start == false)
-            return res.status(404).send({ message: "Facture non payé" })
+        car.forEach( (car) => {
+            let i = parseFloat(car.avancement);
+            const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDebut)
+            const duration = Date.now() - convertDateToMilliseconds(car.dateDebut);
 
-        // const timeElapsed = Date.now();
-        // const today = new Date(timeElapsed);
-        console.log(car.avancement)
-        let i = parseFloat(car.avancement);
-        console.log(i)
-        // const delay = calculateDelay(car.dateDepot, car.dateSortie)
-        const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDepot)
-        console.log(delayms)
-        const duration = Date.now() - convertDateToMilliseconds(car.dateDepot);
-        console.log(duration)
+            
+            
+            const interval = setInterval(async () => {
+                    console.log(`Loading ${i}%`);
+        
+                    // Save the loading progress to MongoDB
+                    await Car.updateOne({ _id: car._id }, { $set: { avancement: i } })
+        
+                    if (duration >= delayms || i >= 100) {
+                        console.log("Complete!");
+        
+                        // Clear the interval
+                        clearInterval(interval);
+                    } else {
+                        setTimeout(() => {
+                            i += (100 / delayms) * (86400000); // Increase by the calculated percentage per day
+                            i = Math.min(i, 100);
+                        }, 86400000); // 86400000ms = 24 hours
+                    }
+                }, 86400000)
+            })
+        
+        // // const timeElapsed = Date.now();
+        // // const today = new Date(timeElapsed);
+        // console.log(car.avancement)
+        // let i = parseFloat(car.avancement);
+        // console.log(i)
+        // // const delay = calculateDelay(car.dateDepot, car.dateSortie)
+        // const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDepot)
+        // console.log(delayms)
+        // const duration = Date.now() - convertDateToMilliseconds(car.dateDepot);
+        // console.log(duration)
 
-        const interval = setInterval(async () => {
-            console.log(`Loading ${i}%`);
+        // const interval = setInterval(async () => {
+        //     console.log(`Loading ${i}%`);
 
-            // Save the loading progress to MongoDB
-            await Car.updateOne({ _id: req.params.id }, { $set: { avancement: i } })
+        //     // Save the loading progress to MongoDB
+        //     await Car.updateOne({ _id: req.params.id }, { $set: { avancement: i } })
 
-            if (duration >= delayms || i >= 100) {
-                console.log("Complete!");
+        //     if (duration >= delayms || i >= 100) {
+        //         console.log("Complete!");
 
-                // Clear the interval
-                clearInterval(interval);
-            } else {
-                setTimeout(() => {
-                    i += (100 / delayms) * (6000); // Increase by the calculated percentage per day
-                    i = Math.min(i, 100);
-                }, 6000); // 86400000ms = 24 hours
-            }
+        //         // Clear the interval
+        //         clearInterval(interval);
+        //     } else {
+        //         setTimeout(() => {
+        //             i += (100 / delayms) * (6000); // Increase by the calculated percentage per day
+        //             i = Math.min(i, 100);
+        //         }, 6000); // 86400000ms = 24 hours
+        //     }
 
 
-        }, 6000); // 86400000ms = 24 hours
-
-        return res.status(200).send({ message: 'Loading...' });
-
-    }
-    catch (error) {
-        console.log(error)
-        res.status(500).send({ message: "Internal Server Error" });
-    }
+        // }, 6000); // 86400000ms = 24 hours
+    
 }

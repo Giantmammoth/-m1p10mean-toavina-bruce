@@ -48,7 +48,7 @@ exports.statGarage = async (req, res) => {
     const mois = today.toLocaleDateString().slice(3, 10)
     let chiffreAffairemArray = []
     let chiffreAffairem = "0"
-    const operationMonth = await Facture.find({ statue: true, dateDebut: new RegExp(mois) })
+    const operationMonth = await Facture.find({ confirmePayement: true, dateDebut: new RegExp(mois) })
     if (operationMonth.length === 0) {
         console.log("no operation this month")
     } else {
