@@ -112,9 +112,16 @@ exports.login = async (req, res, next) => {
 		if (!user.isVerify) {
 			return res.status(401).send({ message: "Un Email de vérification vous a été envoyer, veuiller vérifier s'il vous plait" });
 		}
+
 		const token = user.generateAuthToken();
-		await new Token({ userId: user._id, token }).save()
-		res.status(200).send({ data: token, message: "Connexion reussi !" });
+
+		if (user.isRA) {
+			res.status(200).send({ data: token, identification: "adminResponsableAtelier", message: "Connexion reussi !" });
+		} else if (user.isRF) {
+			res.status(200).send({ data: token, identification: "adminResponsableFinancier", message: "Connexion reussi !" });
+		} else {
+			res.status(200).send({ data: token, identification: "customer", message: "Connexion reussi !" });
+		}
 	} catch (error) {
 		res.status(500).send({ message: "Internal Server Error" });
 	}

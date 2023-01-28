@@ -122,21 +122,15 @@ function convertDateToMilliseconds(dateString) {
 }
 
 exports.updateAllFacture = async (req, res) => {
-  try {
+  
     const facture = await Facture.find({})
     
-    facture.map(element => console.log(convertDateToMilliseconds(element.dateEcheance))) 
-
     facture.filter(element => convertDateToMilliseconds(element.dateEcheance) < Date.now() && element.recuPayement == false).map(async (item) => {
       await Facture.findByIdAndDelete(item._id)
       await Car.findByIdAndDelete(item.idCar)
     })  
-    return res.status(200).send({ message: "Facture update" })
-  }
-  catch (error) {
-    console.log(error)
-    res.status(500).send({ message: "Internal Server Error" });
-  }
+   
+    console.log("update facture")
 }
 
 exports.getAllFacture = async (req, res) => {

@@ -29,6 +29,8 @@ const validate = (data) => {
 		email: Joi.string().email().required().label("Email"),
 		password: passwordComplexity().required().label("Password"),
 		isVerify: Joi.boolean(),
+		isRA: Joi.boolean(),
+		isRF: Joi.boolean(),
 	});
 	return schema.validate(data);
 };

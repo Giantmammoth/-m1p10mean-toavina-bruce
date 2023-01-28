@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cron = require('node-cron');
 const garCrtl = require('./controllers/garage.controller');
 const carCrtl = require('./controllers/car.controller');
+const facCrtl = require('./controllers/facture.controller');
 
 const app = express();
 
@@ -46,9 +47,12 @@ app.use("/api/v1/Service", Service)
 const Facture = require('./routes/facture.route')
 app.use("/api/v1/Facture", Facture)
 
+cron.schedule('0 0 * * *', () => {
+  facCrtl.updateAllFacture()
+});
+
 const Garage = require('./routes/garage.route')
 app.use("/api/v1/Garage", Garage)
-
 
 cron.schedule('0 0 * * *', () => {
   garCrtl.statGarage()
