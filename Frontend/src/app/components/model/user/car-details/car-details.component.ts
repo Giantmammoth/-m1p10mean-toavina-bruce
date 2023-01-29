@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Car } from 'src/app/services/customerService/car';
 import { CustomerService } from 'src/app/services/customerService/customer.service';
 
@@ -12,7 +13,7 @@ export class CarDetailsComponent {
   pages: string[] = ["details", "add", "user", "historique", "facture", "reparation_list"];
   pageSelected: string = "details";
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private customerService: CustomerService, private router: Router) { }
 
   sendToGarage(detail: any) {
     const token = localStorage.getItem('x-auth-token');
@@ -32,10 +33,6 @@ export class CarDetailsComponent {
     {
       icon: "receipt long",
       label: "facture"
-    },
-    {
-      icon: "logout",
-      label: "déconnection"
     }
   ]
 
@@ -118,6 +115,12 @@ export class CarDetailsComponent {
 
     this.sendButtonClicked = true;
     console.log(detail)
+
+  }
+
+  logout() {
+    localStorage.removeItem("x-auth-token")
+    this.router.navigate(['/'])
   }
 
 }

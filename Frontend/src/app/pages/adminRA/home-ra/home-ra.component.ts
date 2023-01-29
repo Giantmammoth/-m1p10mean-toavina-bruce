@@ -3,6 +3,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Car } from '../../../services/customerService/car';
 import { GarageServicesModel } from 'src/app/components/model/user/services/garageServicesModel';
 import { RaService } from 'src/app/services/raService/ra.service';
+import { Route, Router } from '@angular/router';
 @Component({
   selector: 'app-home-ra',
   templateUrl: './home-ra.component.html',
@@ -13,7 +14,7 @@ export class HomeRAComponent {
   selectedCar: any;
   firstclick = false;
 
-  constructor(private garageService: RaService) { }
+  constructor(private garageService: RaService, private router: Router) { }
 
   ngOnInit(): void {
     this.garageService.getCars().subscribe((cars: any) => {
@@ -87,4 +88,10 @@ export class HomeRAComponent {
       return false;
     }
   }
+
+  logout() {
+    localStorage.removeItem("x-auth-token");
+    this.router.navigate(['/'])
+  }
+
 }

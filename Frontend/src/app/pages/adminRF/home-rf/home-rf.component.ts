@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { RfService } from 'src/app/services/rfService/rf.service';
 
 @Component({
@@ -25,9 +26,13 @@ export class HomeRFComponent {
   ]
 
 
-  constructor(private rfService: RfService) { }
+  constructor(private rfService: RfService, private router: Router) { }
 
   ngOnInit() { }
 
+  logout() {
+    localStorage.removeItem("x-auth-token");
+    this.router.navigate(['/']);
+  }
 
 }
