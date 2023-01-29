@@ -9,5 +9,6 @@ router.get('/', [AuthRF], garCrtl.getStat);
 
 router.post('/', [AuthRF], garCrtl.statGarage);
 router.get('/carList', [AuthRA], garCrtl.getCarListInGarage);
+router.get('/carListToPay', [AuthRF], garCrtl.getCarToPayService);
 
 module.exports = router;

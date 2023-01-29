@@ -115,13 +115,26 @@ exports.getStat = async (req, res) => {
     }
 }
 
+exports.getCarToPayService = async (req, res) => {
+    try {
+
+        await Car.find({
+            status: "En attente de payement"
+        }).then(cars => {
+            res.send(cars);
+        })
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 exports.getCarListInGarage = async (req, res) => {
     try {
         await Car.find({
             sendToGarage: true
         }).then(cars => {
-            console.log(cars)
             res.send(cars);
         });
 

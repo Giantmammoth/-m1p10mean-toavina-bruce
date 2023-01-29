@@ -35,4 +35,14 @@ export class RaService {
     return observable;
   }
 
+  confirmStatus() {
+    let observable = new Observable<any>(observer => {
+      this.webService.On("new", (data: any) => {
+        observer.next(data);
+      })
+      return () => { this.webService.Disconnect() }
+    })
+    return observable;
+  }
+
 }

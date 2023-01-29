@@ -116,3 +116,58 @@ mat-drawer {
   height: 100%;
   overflow-x: hidden;
 }
+
+/*---------------------------------------------------------------------*/
+
+.details_container {
+  display: flex;
+  flex-direction: column
+}
+
+.modele {
+  font-family: 'Inter';
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(3, 3, 21, 0.4);
+  color: black;
+  margin: 0px;
+}
+
+.modele>span {
+  font-size: 15px;
+  color: rgba(3, 3, 21, 0.8);
+}
+
+.facture_detail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+.service_title {
+  font-family: 'Inter';
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+.task {
+  font-family: 'Inter';
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0px 40px;
+}
+
+.confirm_button {
+  margin: 10px 20px;
+}

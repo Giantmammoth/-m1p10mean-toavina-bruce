@@ -7,11 +7,12 @@
     <div class="logo">Garage</div>
     <h2>Inscrivez-vous pour déposer votre voiture</h2>
     <form action="">
-      <input type="text" id="name" name="name" placeholder="Nom complet" >
-      <input type="email" name="address_email" id="address_email" placeholder="Adress émail">
-      <input type="password" name="password" id="password" placeholder="Mots de passe">
-      <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmez votre mots de passe">
-      <button mat-raised-button id="inscription">S'inscrire</button>
+      <input type="text" id="name" name="name" placeholder="Nom complet" [(ngModel)]="fullname">
+      <input type="email" name="address_email" id="address_email" placeholder="Adress émail" [(ngModel)]="email">
+      <input type="password" name="password" id="password" placeholder="Mots de passe" [(ngModel)]="password">
+      <input type="password" name="confirm_password" id="confirm_password" [(ngModel)]="confirm_password"
+        placeholder="Confirmez votre mots de passe">
+      <button mat-raised-button id="inscription" (click)="signup()">S'inscrire</button>
     </form>
   </div>
   <p>Vous avez déja un compte ?<a routerLink="/signIn" class="go_to"> Connectez-vous </a></p>

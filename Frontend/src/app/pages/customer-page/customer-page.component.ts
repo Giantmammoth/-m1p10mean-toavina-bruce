@@ -34,8 +34,8 @@ export class CustomerPageComponent {
       this.myCars = cars
     });
 
-    this.customerService.newData().subscribe((data) => {
-      this.myCars = this.myCars.concat(data);
+    this.customerService.newData().subscribe((data: any) => {
+      this.myCars = this.myCars.filter((value: any) => value._id !== data._id).concat(data);
     })
 
   }
@@ -58,7 +58,7 @@ export class CustomerPageComponent {
   }
 
   status(car: any): boolean {
-    if (car.status == "En attente de payement") {
+    if (car.status == "En attente de confirmation" || car.status == "En attente de payement" || car.status == "payé") {
       return true;
     }
     return false;

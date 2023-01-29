@@ -21,6 +21,15 @@ export class LoginService {
     )
   }
 
+  signup(fullName: string, email: string, password: string) {
+    return this.webService.signup(fullName, email, password).pipe(
+      shareReplay(),
+      tap((res: HttpResponse<any>) => {
+        console.log("Signup SUCCESS", res.body.data);
+      })
+    )
+  }
+
   logout() {
     localStorage.removeItem('x-auth-token');
     this.route.navigate(['/']);
@@ -38,10 +47,6 @@ export class LoginService {
     localStorage.setItem('x-auth-token', authToken);
   }
 
-  getUser() {
-    return this.webService.get("").pipe(
 
-    );
-  }
 
 }

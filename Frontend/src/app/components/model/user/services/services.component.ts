@@ -124,7 +124,7 @@ export class ServicesComponent {
   }
 
   sendServices() {
-    this.selectedService.status = "En attente de payement";
+    this.selectedService.status = "En attente de confirmation";
     this.services.sendReparationList(this.selectedService);
   }
 

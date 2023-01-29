@@ -16,6 +16,33 @@ const verify = (token) => {
 exports.Sockets = (socket) => {
     console.log("Socket server work succefuly");
 
+    socket.on("confirm payement", async (data) => {
+        console.log(data);
+        await Car.findOneAndUpdate({
+            _id: data._id
+        }, {
+            $set: new Car({ ...data })
+        }).then(data => data);
+
+        socket.broadcast.emit("new", data);
+
+    });
+
+
+    socket.on("confirm", async (data) => {
+        const car = await Car.findOneAndUpdate({
+            _id: data._id
+        }, {
+            $set: new Car({ ...data }),
+        }).then(data => {
+            return data;
+        })
+
+        socket.broadcast.emit("payement", data);
+
+    })
+
+
     socket.on("send service", async (data) => {
 
         data.historique = data.historique.concat({ ...data.listReparation, dateDepot: data.dateDepot })

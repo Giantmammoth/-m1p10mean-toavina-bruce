@@ -61,4 +61,8 @@ export class CustomerService {
     return observable;
   }
 
+  confirmReparationList(data: any) {
+    this.webServices.Emit("confirm", data);
+  }
+
 }

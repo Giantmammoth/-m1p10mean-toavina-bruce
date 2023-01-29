@@ -22,15 +22,24 @@ export class HomeRAComponent {
       this.reloadData();
     })
     this.garageService.newData().subscribe((data: any) => {
-
       let isIn = this.cars.some((car: any) => car._id == data._id);
       if (!isIn) {
         this.cars = this.cars.concat(data);
         this.reloadData();
       }
-
-
     })
+
+    this.garageService.confirmStatus().subscribe((data: any) => {
+      this.cars = this.cars.map((car: any) => {
+        if (car._id == data._id) {
+          car.status = "payé";
+          return car;
+        } else {
+          return car
+        }
+      })
+    })
+
   }
 
   reloadData() {
@@ -58,7 +67,9 @@ export class HomeRAComponent {
   openControllerPage: boolean = false;
   changeSelectedCar(car: any): void {
     if (!this.firstclick) this.firstclick = true
-    this.openControllerPage = true;
+    if (this.selectedCar.status == "En attente") {
+      this.openControllerPage = true;
+    }
     if (this.selectedCar !== car) this.selectedCar = car;
   }
 

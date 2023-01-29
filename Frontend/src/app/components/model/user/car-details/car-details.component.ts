@@ -52,7 +52,7 @@ export class CarDetailsComponent {
   }
 
   status(): boolean {
-    if (this.detail.status == "En attente de payement") {
+    if (this.detail.status == "En attente de confirmation" || this.detail.status == "En attente de payement" || this.detail.status == "payé") {
       return true;
     }
     return false;
@@ -63,7 +63,9 @@ export class CarDetailsComponent {
   pieces: any;
 
   show(car_detail: any) {
-    this.detail = car_detail;
+    if (this.detail !== car_detail)
+      this.detail = car_detail;
+
     this.pageSelected = 'reparation_list'
     this.services = Object
       .keys(this.detail.listReparation.service)
@@ -85,13 +87,37 @@ export class CarDetailsComponent {
 
   toggleStatus(status: any): void {
     status.done = !status.done
-    console.log(status)
   }
 
   sendButtonClicked: boolean = false;
+
   sendConfirmList() {
+    let service = this.services.map((data: any) => {
+      let task = data.tasks.filter((value: any) => value.done === true).map((data: any) => data.name);
+      return {
+        title: data.title,
+        tasks: task
+      }
+    })
+    let piece = {
+      title: this.pieces.title,
+      tasks: this.pieces.tasks.filter((value: any) => value.done === true)
+    }
+
+    let detail = {
+      ...this.detail,
+      status: "En attente de payement",
+      listReparation: {
+        service,
+        piece
+      }
+    }
+
+    this.detail.status = "En attente de payement"
+    this.customerService.confirmReparationList(detail);
+
     this.sendButtonClicked = true;
-    console.log(this.detail.listReparation);
+    console.log(detail)
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RfService } from 'src/app/services/rfService/rf.service';
 
 @Component({
   selector: 'app-home-rf',
@@ -6,6 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-rf.component.css']
 })
 export class HomeRFComponent {
+  Data: any;
   /* navigation */
   navigation: any = [
     {
@@ -21,4 +23,11 @@ export class HomeRFComponent {
       icon: "analytics"
     }
   ]
+
+
+  constructor(private rfService: RfService) { }
+
+  ngOnInit() { }
+
+
 }

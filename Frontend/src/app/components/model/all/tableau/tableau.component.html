@@ -11,9 +11,29 @@
 
   <mat-drawer-container class="container-side" autosize>
     <!-- side content -->
-    <mat-drawer #side position="end" mode="side">
-      <div class="details_container">
-        <h1>hello world</h1>
+    <mat-drawer #side position="end" [opened]="open" mode="side">
+      <div class="details_container" *ngIf="selectedCar">
+        <h1 class="modele">{{ selectedCar.model }} <span class="matricule"> {{selectedCar.matricule}} </span></h1>
+        <div class="facture_detail">
+          <div *ngFor="let service of selectedCar.listReparation.service">
+            <div class="service" *ngIf="service.tasks.length !== 0">
+              <div class="service_title"> {{service.title}} </div>
+              <div *ngFor="let task of service.tasks" class="task">
+                <div> {{task}} </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="service" *ngIf="selectedCar.listReparation.piece.tasks.length !== 0">
+            <div class="service_title"> {{selectedCar.listReparation.piece.title}} </div>
+
+            <div *ngFor="let task of selectedCar.listReparation.piece.tasks" class="task">
+              <div> {{task.name}} </div>
+            </div>
+          </div>
+        </div>
+
+        <button mat-raised-button class="confirm_button" (click)="confirm()">payé</button>
       </div>
     </mat-drawer>
 
@@ -28,7 +48,7 @@
       </div>
 
       <div class="tbody">
-        <div class="row" *ngFor="let data of dataToShow; let o = odd" (click)="side.toggle()">
+        <div class="row" *ngFor="let data of dataToShow; let o = odd" (click)="[open = true, selectedCar = data]">
           <div class="col" [class.isEven]="o" *ngFor="let key of headerColumn">
             {{data[key]}}
           </div>
