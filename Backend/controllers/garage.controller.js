@@ -11,7 +11,6 @@ function sommeArr(arr) {
     return somme
 }
 
-
 exports.statGarage = async (req, res) => {
 
 
@@ -20,11 +19,12 @@ exports.statGarage = async (req, res) => {
     // temps de reparation moyen
     let delaiArray = []
     car.forEach(element => {
-        element.listReparation.map(data => delaiArray.push(data.delai))
+        element.listReparation.service.forEach(element => 
+            element.tasks.map(task => delaiArray.push(task.split("/")[2].trim().split(" ")[0]))
+        )
     })
-    let sommedelai = delaiArray.map(str => parseInt(str));
-    let totaldelai = sommedelai.reduce((a, b) => a + b);
-    const tempsReparationM = totaldelai / car.length
+    
+    const tempsReparationM = sommeArr(delaiArray) / car.length
     console.log(tempsReparationM)
 
     // chiffre d'affaire journalier
@@ -32,12 +32,17 @@ exports.statGarage = async (req, res) => {
     const today = new Date(timeElapsed);
     let chiffreAffairedArray = []
     let chiffreAffaired = "0"
-    const operationDay = await Facture.find({ confirmePayement: true, dateDebut: today.toLocaleDateString() })
+    const operationDay = await Car.find({ $or: [ 
+        { status: "payé" }, 
+        { status: "Réparation términé" } 
+      ], dateDebut: today.toLocaleDateString() })
     if (operationDay.length === 0) {
         console.log("no operation today")
     } else {
         operationDay.forEach(element => {
-            chiffreAffairedArray.push(element.totalPrix)
+            element.listReparation.service.forEach(element => 
+                element.tasks.map(task => chiffreAffairedArray.push(task.split("/")[1].trim().split(" ")[0]))
+            )
         })
         console.log(sommeArr(chiffreAffairedArray))
         chiffreAffaired = sommeArr(chiffreAffairedArray)
@@ -49,12 +54,14 @@ exports.statGarage = async (req, res) => {
     const mois = today.toLocaleDateString().slice(3, 10)
     let chiffreAffairemArray = []
     let chiffreAffairem = "0"
-    const operationMonth = await Facture.find({ statue: true, dateDebut: new RegExp(mois) })
+    const operationMonth = await Car.find({ status: "Réparation términé", dateDebut: new RegExp(mois) })
     if (operationMonth.length === 0) {
         console.log("no operation this month")
     } else {
         operationMonth.forEach(element => {
-            chiffreAffairemArray.push(element.totalPrix)
+            element.listReparation.service.forEach(element => 
+                element.tasks.map(task => chiffreAffairemArray.push(task.split("/")[1].trim().split(" ")[0]))
+            )
         })
         console.log(sommeArr(chiffreAffairemArray))
         chiffreAffairem = sommeArr(chiffreAffairemArray)
@@ -66,7 +73,9 @@ exports.statGarage = async (req, res) => {
     let totalMateriel = []
     let totalSalaire = []
 
-    operationMonth.forEach(element => totalMateriel.push(element.prixMateriel))
+    operationMonth.forEach(element => {
+        element.listReparation.piece.tasks.map(task => totalMateriel.push(task.name.split("/")[1].trim().split(" ")[0]))
+    })
 
     const salaire = await Employer.find({})
     salaire.forEach(element => totalSalaire.push(element.salaire))

@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const cron = require('node-cron');
 const garCrtl = require('./controllers/garage.controller');
+const carCrtl = require('./controllers/car.controller');
+const facCrtl = require('./controllers/facture.controller');
 
 const app = express();
 
@@ -32,6 +34,10 @@ app.use(bodyParser.json());
 const User = require('./routes/user.route')
 app.use("/api/v1/User", User)
 
+cron.schedule('0 0 * * *', () => {
+  carCrtl.progressPercentage()
+});
+
 const Car = require('./routes/car.route')
 app.use("/api/v1/Car", Car)
 
@@ -41,9 +47,12 @@ app.use("/api/v1/Service", Service)
 const Facture = require('./routes/facture.route')
 app.use("/api/v1/Facture", Facture)
 
+// cron.schedule('0 0 * * *', () => {
+//   facCrtl.updateAllFacture()
+// });
+
 const Garage = require('./routes/garage.route')
 app.use("/api/v1/Garage", Garage)
-
 
 cron.schedule('0 0 * * *', () => {
   garCrtl.statGarage()

@@ -21,10 +21,6 @@ export class ServicesComponent {
   */
   navigation: any[] = [
     {
-      label: "groupe",
-      icon: "group_add"
-    },
-    {
       label: "piece",
       icon: "extension"
     },

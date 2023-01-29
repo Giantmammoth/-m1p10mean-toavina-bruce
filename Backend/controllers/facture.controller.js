@@ -11,13 +11,18 @@ function addDays(date, days) {
   return newDate;
 }
 
+const timeElapsed = Date.now();
+const today = new Date(timeElapsed);
+
 exports.confirmeCommande = async (req, res) => {
   try {
       const car = await Car.findById(req.params.id)
       if (!car)
           return res.status(404).send({ message: "Car not found" })
 
-      await Car.updateOne({_id: car._id}, {$set: {confirmationList: true }})
+      const user = await User.findById(car.user)
+
+      await Car.updateOne({_id: car._id}, {$set: {confirmationList: true , status: "En attente de payement"}})
       const facture = new Facture({
           idCar: car._id,
           model: car.model,
@@ -28,13 +33,11 @@ exports.confirmeCommande = async (req, res) => {
           prixMateriel: car.prixMateriel,
           totalPrix: car.totalPrix,
           dateDepot: car.dateDepot,
-          dateEcheance: addDays(car.dateDepot, 7),
-          user: car.user,
-          userName: car.userName
+          dateEcheance: addDays(today.toLocaleDateString(), 7),
+          user: user._id,
+          userName: user.fullName
       })
       await facture.save()
-
-      const user = await User.findById(facture.user)
 
       const message = `
 Bonjour,
@@ -44,6 +47,7 @@ Bien a vous.
 
 Garage`
       await sendMail(user.email, `Facture pour ${facture.model} ${facture.matricule}`, message )
+
       return res.status(200).send({ message: 'Votre voiture a été déposer avec succès' });
   }
   catch (error) {
@@ -59,6 +63,7 @@ exports.payement = async (req, res) => {
       return res.status(404).send({ message: "facture not found"})
     
     await Facture.updateOne({_id: facture._id}, {$set: {recuPayement: true}})
+    await Car.updateOne({_id: facture.idCar}, {$set: {status: "Payement envoyé"}})
     return res.status(200).send({ message: "Facture payé avec succè !" })
   }
   catch (error) {
@@ -88,8 +93,17 @@ exports.confirmePay = async (req, res) => {
     let sommedelai = delaiArray.map(str => parseInt(str));
     let totaldelai = sommedelai.reduce((a, b) => a + b);
 
-    await Facture.updateOne({ _id: facture._id }, { $set: { confirmePayement: true , dateDebut: today.toLocaleDateString(), dateSortie: addDays(today.toLocaleDateString(), totaldelai) } })
-    await Car.updateOne({ _id: car._id }, { $set: {start: true, dateDebut: today.toLocaleDateString(), dateSortie: addDays(today.toLocaleDateString(), totaldelai) } })
+    await Facture.updateOne({ _id: facture._id }, { $set: { 
+      confirmePayement: true , 
+      dateDebut: today.toLocaleDateString(), 
+      dateSortie: addDays(today.toLocaleDateString(), totaldelai) 
+    }})
+    await Car.updateOne({ _id: car._id }, { $set: {
+      sendToGarage: true,
+      dateDebut: today.toLocaleDateString(), 
+      dateSortie: addDays(today.toLocaleDateString(), totaldelai),
+      status: "En cours de réparation" 
+    }})
 
     return res.status(200).send({ message: "Facture confirmé !" })
 
@@ -107,24 +121,23 @@ function convertDateToMilliseconds(dateString) {
   return date.getTime();
 }
 
-exports.getAllFacture = async (req, res) => {
-  try {
+exports.updateAllFacture = async (req, res) => {
+  
     const facture = await Facture.find({})
-
-    console.log(Date.now())
     
-    facture.map(element => console.log(convertDateToMilliseconds(element.dateEcheance))) 
-
     facture.filter(element => convertDateToMilliseconds(element.dateEcheance) < Date.now() && element.recuPayement == false).map(async (item) => {
       await Facture.findByIdAndDelete(item._id)
       await Car.findByIdAndDelete(item.idCar)
-    })
+    })  
+   
+    console.log("update facture")
+}
 
-    const newfacture = await Facture.find({})
+exports.getAllFacture = async (req, res) => {
+  try {
+    const facture = await Facture.find({})
     
-    return res.status(200).send({ data: newfacture })
-
-
+    return res.status(200).send({ data: facture })
   }
   catch (error) {
     console.log(error)

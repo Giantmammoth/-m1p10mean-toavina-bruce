@@ -4,15 +4,14 @@ const { User } = require('../models/user.model');
 const Facture = require('../models/facture.model');
 const sendMail = require('../middleware/sendmail');
 const socket = require('../server');
+const cron = require('node-cron');
 
-function addDays(date, days) {
-    const parts = date.split("/");
-    const d = new Date(parts[2], parts[1] - 1, parts[0]);
-    d.setDate(d.getDate() + days);
-    const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
-    return newDate;
+
+function sommeArr(arr) {
+    let convertstr = arr.map(str => parseInt(str));
+    let somme = convertstr.reduce((a, b) => a + b);
+    return somme
 }
-
 
 exports.getCarList = async (req, res) => {
     try {
@@ -103,7 +102,6 @@ exports.updateListReparation = async (req, res) => {
         let materielArray = []
         let prixMat = []
         let price = []
-        let delaiArray = []
         req.body.listReparation.forEach(element => {
             const item = {
                 tache: element.tache,
@@ -112,7 +110,6 @@ exports.updateListReparation = async (req, res) => {
             }
             repareArray.push(item);
             price.push(item.prix)
-            delaiArray.push(item.delai)
         });
         req.body.materiel.forEach(element => {
             const item = {
@@ -123,10 +120,15 @@ exports.updateListReparation = async (req, res) => {
             prixMat.push(item.prix)
         })
 
-        let intArray = price.map(str => parseInt(str));
-        let finalprice = intArray.reduce((a, b) => a + b);
 
-        await Car.updateOne({ _id: req.params.id }, { $set: { listReparation: repareArray, totalPrix: finalprice } })
+        await Car.updateOne({ _id: req.params.id }, {
+            $set: {
+                listReparation: repareArray,
+                totalPrix: sommeArr(price),
+                materiel: materielArray,
+                prixMateriel: sommeArr(prixMat)
+            }
+        })
         return res.status(200).send({ message: 'Liste réparation envoyé' });
 
     }
@@ -143,51 +145,52 @@ function convertDateToMilliseconds(dateString) {
 }
 
 exports.progressPercentage = async (req, res) => {
-    try {
-        const car = await Car.findById(req.params.id)
-        if (!car)
-            return res.status(404).send({ message: "Car not found" })
 
-        if (car.start == false)
-            return res.status(404).send({ message: "Facture non payé" })
+    const car = await Car.find({ status: "payé" })
+    if (!car)
+        return res.status(404).send({ message: "Car not found" })
 
-        // const timeElapsed = Date.now();
-        // const today = new Date(timeElapsed);
-        console.log(car.avancement)
+    car.forEach(async (car) => {
         let i = parseFloat(car.avancement);
-        console.log(i)
-        // const delay = calculateDelay(car.dateDepot, car.dateSortie)
-        const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDepot)
-        console.log(delayms)
-        const duration = Date.now() - convertDateToMilliseconds(car.dateDepot);
-        console.log(duration)
+        const delayms = convertDateToMilliseconds(car.dateSortie) - convertDateToMilliseconds(car.dateDebut)
+        const duration = Date.now() - convertDateToMilliseconds(car.dateDebut);
 
-        const interval = setInterval(async () => {
-            console.log(`Loading ${i}%`);
-
-            // Save the loading progress to MongoDB
-            await Car.updateOne({ _id: req.params.id }, { $set: { avancement: i } })
-
-            if (duration >= delayms || i >= 100) {
-                console.log("Complete!");
-
-                // Clear the interval
-                clearInterval(interval);
-            } else {
-                setTimeout(() => {
-                    i += (100 / delayms) * (6000); // Increase by the calculated percentage per day
-                    i = Math.min(i, 100);
-                }, 6000); // 86400000ms = 24 hours
-            }
-
-
-        }, 6000); // 86400000ms = 24 hours
-
-        return res.status(200).send({ message: 'Loading...' });
-
-    }
-    catch (error) {
-        console.log(error)
-        res.status(500).send({ message: "Internal Server Error" });
-    }
+        if (duration >= delayms || i == 100) {
+            i = 100;
+            console.log(`Réparation ${car.model} ${car.matricule} terminer `)
+            await Car.updateOne({ _id: car._id }, { $set: { avancement: i, status: "Réparation términé" } });
+        } else {
+            i += (100 / delayms) * (86400000); // Augmenter de pourcentage calculé par jour
+            i = Math.min(i, 100);
+            console.log (`Loading ${i}%`)
+            await Car.updateOne({ _id: car._id }, { $set: { avancement: i } });
+        }
+    })
 }
+
+// exports.getSplitPrice = async (req, res) => {
+//     try{
+//         const car = await Car.find({status : "En attente de confirmation"})
+//         let depenseArr = []
+//         let totalPrixArr = []
+//         let delaiArr = []
+//         car.forEach(car => {
+//             car.listReparation.piece.tasks.map(task => depenseArr.push(task.split("/")[1].trim().split(" ")[0]))
+//             car.listReparation.service.revision.tasks.map(task => totalPrixArr.push(task.split("/")[1].trim().split(" ")[0]))
+//             car.listReparation.service.entretien.tasks.map(task => totalPrixArr.push(task.split("/")[1].trim().split(" ")[0]))
+//             car.listReparation.service.reparation.tasks.map(task => totalPrixArr.push(task.split("/")[1].trim().split(" ")[0]))
+
+//             car.listReparation.service.revision.tasks.map(task => delaiArr.push(task.split("/")[2].trim().split(" ")[0]))
+//         car.listReparation.service.entretien.tasks.map(task => delaiArr.push(task.split("/")[2].trim().split(" ")[0]))
+//         car.listReparation.service.reparation.tasks.map(task => delaiArr.push(task.split("/")[2].trim().split(" ")[0]))
+//         })
+//         const depense = sommeArr(depenseArr)
+//         const totalPrix = sommeArr(totalPrixArr)
+//         console.log(totalPrix)
+//         return res.status(200).send({data: sommeArr(delaiArr)})
+//     }
+//     catch (error) {
+//         console.log(error)
+//         res.status(500).send({ message: "Internal Server Error" });
+//     }
+// }

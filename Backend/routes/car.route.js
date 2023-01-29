@@ -6,8 +6,9 @@ const Auth = require('../middleware/Auth')
 const Car = require('../models/car.model');
 
 router.get('/', Auth, carCtrl.getCarList);
+// router.get('/split', Auth, carCtrl.getSplitPrice);
+
 router.post('/', Auth, carCtrl.addNewCar);
-router.patch('/', Auth, carCtrl.depotCar);
 router.put('/progress/:id', [validateObjectId, Auth], carCtrl.progressPercentage);
 router.put('/listReparation/:id', [validateObjectId, Auth], carCtrl.updateListReparation);
 router.delete('/', (req, res) => {

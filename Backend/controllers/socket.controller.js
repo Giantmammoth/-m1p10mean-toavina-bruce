@@ -3,6 +3,23 @@ const Token = require("../models/token.model");
 
 const jwt = require("jsonwebtoken");
 
+function sommeArr(arr) {
+    let convertstr = arr.map(str => parseInt(str));
+    let somme = convertstr.reduce((a, b) => a + b);
+    return somme
+}
+
+function addDays(date, days) {
+    const parts = date.split("/");
+    const d = new Date(parts[2], parts[1] - 1, parts[0]);
+    d.setDate(d.getDate() + days);
+    const newDate = d.getDate().toString().padStart(2, '0') + "/" + (d.getMonth() + 1).toString().padStart(2, '0') + "/" + d.getFullYear();
+    return newDate;
+}
+
+const timeElapsed = Date.now();
+const today = new Date(timeElapsed);
+
 const verify = (token) => {
     return jwt.verify(token, process.env.JWTPRIVATEKEY, (err, validToken) => {
         if (err) {
@@ -17,12 +34,30 @@ exports.Sockets = (socket) => {
     console.log("Socket server work succefuly");
 
     socket.on("confirm payement", async (data) => {
-        console.log(data);
+        
         await Car.findOneAndUpdate({
             _id: data._id
         }, {
             $set: new Car({ ...data })
+        })
+
+        const car = await Car.findById(data._id)
+        console.log(car)
+        let delaiArr = []
+        car.listReparation.service.forEach(element => 
+            element.tasks.map(task => delaiArr.push(task.split("/")[2].trim().split(" ")[0]))
+        )
+        
+
+        const car1 = await Car.findOneAndUpdate({
+            _id: data._id
+        }, {
+            $set: {
+                dateDebut: today.toLocaleDateString(),
+                dateSortie: addDays(today.toLocaleDateString(), sommeArr(delaiArr))
+            }
         }).then(data => data);
+        console.log("payement confirmé")
 
         socket.broadcast.emit("new", data);
 
@@ -45,16 +80,31 @@ exports.Sockets = (socket) => {
 
     socket.on("send service", async (data) => {
 
+        let depenseArr = []
+        let totalPrixArr = []
+        
         data.historique = data.historique.concat({ ...data.listReparation, dateDepot: data.dateDepot })
 
-        const car = await Car.findOneAndUpdate({
+        await Car.findOneAndUpdate({
             _id: data._id
         }, {
             $set: new Car({ ...data }),
+        })
+
+        const car = await Car.findById(data._id)
+        car.listReparation.piece.tasks.map(task => depenseArr.push(task.split("/")[1].trim().split(" ")[0]))
+        car.listReparation.service.revision.tasks.map(task => totalPrixArr.push(task.split("/")[1].trim().split(" ")[0]))
+        car.listReparation.service.entretien.tasks.map(task => totalPrixArr.push(task.split("/")[1].trim().split(" ")[0]))
+        car.listReparation.service.reparation.tasks.map(task => totalPrixArr.push(task.split("/")[1].trim().split(" ")[0]))
+
+        const car1 = await Car.findOneAndUpdate({
+            _id: data._id
+        }, {
+            $set: {totalPrix: sommeArr(totalPrixArr), prixMateriel: sommeArr(depenseArr)},
         }).then(data => {
             return data;
         })
-        console.log("done .....", car)
+        console.log("done .....", car1)
 
         socket.broadcast.emit("list reparation", data);
 
