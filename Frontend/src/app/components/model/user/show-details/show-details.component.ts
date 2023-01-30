@@ -18,11 +18,7 @@ export class ShowDetailsComponent {
 
   services: any = Object
     .keys(this.reparationDetails.service)
-    .filter((value: string) => value !== "title")
     .map((key: string): any => {
-
-      this.reparationDetails.service[key].tasks = ["Lorem ipsum dolor", " sit amet consectetur", " adipisicing elit.", "Nihil iste quas unde!"];
-      this.reparationDetails.piece.tasks = ["Lorem ipsum dolor", " sit amet consectetur", " adipisicing elit.", "Nihil iste quas unde!"];
 
       return {
         title: this.reparationDetails.service[key].title,
@@ -35,6 +31,9 @@ export class ShowDetailsComponent {
     tasks: this.reparationDetails.piece.tasks.map((value: any) => { return { name: value, done: false } })
   };
 
+  show() {
+    console.log(this.reparationDetails)
+  }
 
   toggleStatus(status: any): void {
     status.done = !status.done

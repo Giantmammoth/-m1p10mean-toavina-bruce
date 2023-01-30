@@ -75,7 +75,7 @@ export class HomeRAComponent {
   }
 
   openDetailsPage: boolean = false;
-  carSelectedToShowDetails: Car = this.enCours[0];
+  carSelectedToShowDetails: any = this.enCours[0];
   changeCarSelectedToShowDetails(car: Car): void {
     if (this.carSelectedToShowDetails !== car) this.carSelectedToShowDetails = car;
     this.openDetailsPage = true;

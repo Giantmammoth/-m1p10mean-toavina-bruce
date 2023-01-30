@@ -44,7 +44,7 @@ export class CarDetailsComponent {
   /* Progress Bar function */
   progress: string = "15%";
   progressBar(): Object {
-    const style = { 'width': this.progress };
+    const style = { 'width': `${this.detail.avancement}%` };
     return style;
   }
 

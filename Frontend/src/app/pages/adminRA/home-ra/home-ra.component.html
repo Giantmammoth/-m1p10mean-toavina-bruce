@@ -18,7 +18,7 @@
 
           <mat-drawer-container class="container-side" autosize>
             <mat-drawer #detailsPage [(opened)]="openDetailsPage" class="sidenav box_container" mode="push">
-              <app-show-details [openDetailsPage]="detailsPage"></app-show-details>
+              <app-show-details #detailEnCours [openDetailsPage]="detailsPage"></app-show-details>
             </mat-drawer>
 
 
@@ -54,7 +54,8 @@
 
               <div class="sidenav-content">
                 <h2>En cours de réparation</h2>
-                <div class="list-item" *ngFor="let car of enCours" (click)="changeCarSelectedToShowDetails(car)"
+                <div class="list-item" *ngFor="let car of enCours"
+                  (click)="[changeCarSelectedToShowDetails(car),detailEnCours.reparationDetails = carSelectedToShowDetails.listReparation]"
                   cdkDrag>
                   <div>
                     <p class="marque"> {{car.model}} </p>
